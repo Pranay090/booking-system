@@ -1,9 +1,52 @@
-INSERT INTO events (name)
-VALUES ('Rock Concert');
+-- Clean up existing data
+TRUNCATE TABLE booking_seats, bookings, seats, shows, events RESTART IDENTITY CASCADE;
 
-INSERT INTO shows (event_id, show_time)
-VALUES (1, '2026-01-10 19:00:00');
+-- Insert Events
+INSERT INTO events (name) VALUES 
+('Rock Concert'),  -- ID 1
+('Pop Festival'),  -- ID 2
+('Jazz Night');    -- ID 3
 
--- Seats A1 to A20
+-- Insert Shows
+-- Event 1: Rock Concert
+INSERT INTO shows (event_id, show_time) VALUES 
+(1, '2026-02-01 19:00:00'), -- Show 1
+(1, '2026-02-02 19:00:00'); -- Show 2
+
+-- Event 2: Pop Festival
+INSERT INTO shows (event_id, show_time) VALUES 
+(2, '2026-02-14 18:00:00'); -- Show 3
+
+-- Event 3: Jazz Night
+INSERT INTO shows (event_id, show_time) VALUES 
+(3, '2026-02-20 20:00:00'); -- Show 4
+
+-- Insert Seats for Show 1 (Rock Concert, Day 1)
+-- Rows A-E, Seats 1-10 (50 seats)
 INSERT INTO seats (show_id, seat_number, status)
-SELECT 1, 'A' || generate_series(1,20), 'AVAILABLE';
+SELECT 1, chr(row) || num, 'AVAILABLE'
+FROM generate_series(65, 69) AS row, generate_series(1, 10) AS num;
+
+-- Insert Seats for Show 2 (Rock Concert, Day 2)
+INSERT INTO seats (show_id, seat_number, status)
+SELECT 2, chr(row) || num, 'AVAILABLE'
+FROM generate_series(65, 69) AS row, generate_series(1, 10) AS num;
+
+-- Insert Seats for Show 3 (Pop Festival)
+INSERT INTO seats (show_id, seat_number, status)
+SELECT 3, chr(row) || num, 'AVAILABLE'
+FROM generate_series(65, 69) AS row, generate_series(1, 10) AS num;
+
+-- Insert Seats for Show 4 (Jazz Night)
+INSERT INTO seats (show_id, seat_number, status)
+SELECT 4, chr(row) || num, 'AVAILABLE'
+FROM generate_series(65, 69) AS row, generate_series(1, 10) AS num;
+
+-- Randomly book some seats to simulate usage
+-- Booking a few seats for Show 1
+UPDATE seats SET status = 'BOOKED' 
+WHERE show_id = 1 AND seat_number IN ('A1', 'A2', 'B5', 'C8');
+
+-- Booking a few seats for Show 3
+UPDATE seats SET status = 'BOOKED' 
+WHERE show_id = 3 AND seat_number IN ('A1', 'D4', 'E9', 'E10');
