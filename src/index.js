@@ -1,4 +1,6 @@
 const express = require('express');
+require('./redis')
+
 const pool = require('./db');
 const seatsRoute = require('./routes/seats');
 const bookingRoute = require('./routes/booking');
