@@ -1,7 +1,11 @@
 -- Clean up existing data
-TRUNCATE TABLE booking_seats, bookings, seats, shows, events RESTART IDENTITY CASCADE;
+TRUNCATE TABLE booking_seats, bookings, seats, shows, events, users RESTART IDENTITY CASCADE;
 
 -- Insert Events
+INSERT INTO users (email, password_hash, role) VALUES 
+('admin@example.com', '$2b$10$qezJfSkDdhx5iRE8ATwXBudmOZrszOvnMfuG/V/odc59q9/KyxeZK', 'admin'),
+('user@example.com', '$2b$10$qezJfSkDdhx5iRE8ATwXBudmOZrszOvnMfuG/V/odc59q9/KyxeZK', 'user');
+
 INSERT INTO events (name) VALUES 
 ('Rock Concert'),  -- ID 1
 ('Pop Festival'),  -- ID 2

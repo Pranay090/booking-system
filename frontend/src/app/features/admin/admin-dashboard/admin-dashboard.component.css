@@ -1,5 +1,7 @@
 .admin-container {
-  padding-bottom: 20px;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  padding-bottom: 40px;
 }
 
 .spacer {
@@ -8,25 +10,73 @@
 
 .dashboard-tabs {
   margin: 20px;
+  background: rgba(30, 41, 59, 0.6) !important;
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  overflow: hidden;
 }
 
 .tab-content {
-  padding: 20px;
+  padding: 32px;
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .table-container {
   overflow: auto;
   max-height: 600px;
+  border-radius: 12px;
+  background: rgba(30, 41, 59, 0.4);
+  border: 1px solid rgba(99, 102, 241, 0.2);
 }
 
 table {
   width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+table thead {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+table thead th {
+  color: #f8fafc !important;
+  font-weight: 600;
+  padding: 16px !important;
+  border-bottom: 2px solid rgba(99, 102, 241, 0.3);
+}
+
+table tbody tr {
+  transition: all 0.2s ease;
+  border-bottom: 1px solid rgba(99, 102, 241, 0.1);
+}
+
+table tbody tr:nth-child(even) {
+  background: rgba(99, 102, 241, 0.05);
+}
+
+table tbody tr:hover {
+  background: rgba(99, 102, 241, 0.15);
+  transform: scale(1.01);
+}
+
+table tbody td {
+  color: #cbd5e1 !important;
+  padding: 14px !important;
 }
 
 .grid-layout {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
 }
 
 .full-width {
@@ -34,12 +84,52 @@ table {
 }
 
 mat-card {
-  background: #333;
-  color: #e0e0e0;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(99, 102, 241, 0.2) !important;
+  border-radius: 16px !important;
+  color: #f8fafc !important;
+  transition: all 0.3s ease;
+}
+
+mat-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(99, 102, 241, 0.4) !important;
+  box-shadow: 0 8px 32px rgba(99, 102, 241, 0.3);
+}
+
+mat-card mat-card-title {
+  color: #f8fafc !important;
+  font-weight: 600;
+}
+
+mat-card mat-card-content {
+  color: #cbd5e1 !important;
 }
 
 .no-data {
   text-align: center;
-  margin-top: 20px;
-  color: #777;
+  margin-top: 40px;
+  padding: 40px;
+  color: #94a3b8;
+  font-size: 16px;
+  background: rgba(99, 102, 241, 0.05);
+  border-radius: 12px;
+  border: 1px dashed rgba(99, 102, 241, 0.2);
+}
+
+/* Form field styling */
+.full-width mat-form-field {
+  margin-bottom: 16px;
+}
+
+button[type="submit"], button[color="primary"] {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%) !important;
+  color: #fff !important;
+  font-weight: 600;
+}
+
+button[type="submit"]:hover, button[color="primary"]:hover {
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+  transform: translateY(-2px);
 }

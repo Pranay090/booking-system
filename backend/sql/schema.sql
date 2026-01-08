@@ -16,10 +16,18 @@ CREATE TABLE seats (
   status TEXT CHECK (status IN ('AVAILABLE','BOOKED'))
 );
 
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  email TEXT UNIQUE NOT NULL,
+  password_hash TEXT NOT NULL,
+  role TEXT NOT NULL CHECK (role IN ('admin', 'user')),
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
 CREATE TABLE bookings (
   id SERIAL PRIMARY KEY,
-  show_id INT NOT NULL,
-  user_id INT NOT NULL,
+  show_id INT REFERENCES shows(id),
+  user_id INT REFERENCES users(id),
   created_at TIMESTAMP DEFAULT NOW()
 );
 

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { AdminService } from '../services/admin.service';
 import { AuthService } from '../../../core/services/auth.service';
@@ -10,7 +10,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     styleUrls: ['./admin-dashboard.component.css'],
     standalone: false
 })
-export class AdminDashboardComponent {
+export class AdminDashboardComponent implements OnInit {
     tables = ['events', 'shows', 'seats', 'bookings', 'users', 'booking_seats'];
     currentTable = 'events';
     tableData: any[] = [];
@@ -32,14 +32,20 @@ export class AdminDashboardComponent {
         private adminService: AdminService,
         private authService: AuthService,
         private router: Router,
-        private snackBar: MatSnackBar
-    ) {
+        private snackBar: MatSnackBar,
+        private readonly cdr: ChangeDetectorRef
+    ) { }
+
+    ngOnInit() {
         this.loadTable(this.currentTable);
         this.loadEvents();
     }
 
     loadEvents() {
-        this.adminService.getEvents().subscribe(data => this.eventsList = data);
+        this.adminService.getEvents().subscribe(data => {
+            this.eventsList = data;
+            this.cdr.detectChanges();
+        });
     }
 
     loadTable(tableName: string) {
