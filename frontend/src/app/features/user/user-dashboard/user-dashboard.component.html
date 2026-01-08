@@ -1,0 +1,21 @@
+<div class="user-container">
+    <mat-toolbar color="primary">
+        <span>Events</span>
+        <span class="spacer"></span>
+        <button mat-button (click)="logout()">Logout</button>
+    </mat-toolbar>
+
+    <div class="content">
+        <h2>Upcoming Events</h2>
+        <div class="events-grid">
+            <mat-card *ngFor="let event of events" class="event-card">
+                <mat-card-header>
+                    <mat-card-title>{{event.name}}</mat-card-title>
+                </mat-card-header>
+                <mat-card-actions>
+                    <button mat-raised-button color="accent" (click)="onBook(event.id)">Book Tickets</button>
+                </mat-card-actions>
+            </mat-card>
+        </div>
+    </div>
+</div>

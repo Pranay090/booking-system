@@ -1,0 +1,22 @@
+.user-container {
+  min-height: 100vh;
+}
+
+.content {
+  padding: 20px;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.events-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.event-card {
+  width: 300px;
+  background: #333;
+}

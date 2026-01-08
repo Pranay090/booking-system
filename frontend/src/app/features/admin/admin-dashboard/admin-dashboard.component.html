@@ -1,0 +1,101 @@
+<div class="admin-container">
+    <mat-toolbar color="primary">
+        <span>Admin Dashboard</span>
+        <span class="spacer"></span>
+        <button mat-button routerLink="/logout" (click)="logout()">Logout</button>
+    </mat-toolbar>
+
+    <mat-tab-group class="dashboard-tabs">
+        <!-- View Data Tab -->
+        <mat-tab label="view Database">
+            <div class="tab-content">
+                <mat-form-field appearance="fill">
+                    <mat-label>Select Table</mat-label>
+                    <mat-select [(value)]="currentTable" (selectionChange)="loadTable($event.value)">
+                        <mat-option *ngFor="let table of tables" [value]="table">
+                            {{table | titlecase}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <div class="table-container mat-elevation-z8" *ngIf="tableData.length > 0; else noData">
+                    <table mat-table [dataSource]="tableData">
+                        <ng-container *ngFor="let col of displayedColumns" [matColumnDef]="col">
+                            <th mat-header-cell *matHeaderCellDef> {{col}} </th>
+                            <td mat-cell *matCellDef="let element"> {{element[col]}} </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+                </div>
+                <ng-template #noData>
+                    <p class="no-data">No data found in {{currentTable}}</p>
+                </ng-template>
+            </div>
+        </mat-tab>
+
+        <!-- Manage Tab -->
+        <mat-tab label="Manage Resources">
+            <div class="tab-content grid-layout">
+                <!-- Add Event -->
+                <mat-card>
+                    <mat-card-header>
+                        <mat-card-title>Add Event</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <mat-form-field class="full-width">
+                            <mat-label>Event Name</mat-label>
+                            <input matInput [(ngModel)]="eventName">
+                        </mat-form-field>
+                        <button mat-raised-button color="accent" (click)="onAddEvent()">Create Event</button>
+                    </mat-card-content>
+                </mat-card>
+
+                <!-- Add Show -->
+                <mat-card>
+                    <mat-card-header>
+                        <mat-card-title>Add Show</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <mat-form-field class="full-width">
+                            <mat-label>Select Event</mat-label>
+                            <mat-select [(ngModel)]="showEventId">
+                                <mat-option *ngFor="let event of eventsList"
+                                    [value]="event.id">{{event.name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field class="full-width">
+                            <mat-label>Show Time (YYYY-MM-DD HH:MM:SS)</mat-label>
+                            <input matInput [(ngModel)]="showTime" placeholder="2025-01-01 20:00:00">
+                        </mat-form-field>
+                        <button mat-raised-button color="accent" (click)="onAddShow()">Create Show</button>
+                    </mat-card-content>
+                </mat-card>
+
+                <!-- Add Seats -->
+                <mat-card>
+                    <mat-card-header>
+                        <mat-card-title>Add Seats Configuration</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <mat-form-field class="full-width">
+                            <mat-label>Select Show ID</mat-label>
+                            <!-- Ideally shows for selected event, but simpler here -->
+                            <input matInput type="number" [(ngModel)]="seatShowId" placeholder="Show ID">
+                        </mat-form-field>
+                        <mat-form-field class="full-width">
+                            <mat-label>Prefix (e.g. A)</mat-label>
+                            <input matInput [(ngModel)]="seatPrefix">
+                        </mat-form-field>
+                        <mat-form-field class="full-width">
+                            <mat-label>Count (e.g. 50)</mat-label>
+                            <input matInput type="number" [(ngModel)]="seatCount">
+                        </mat-form-field>
+                        <button mat-raised-button color="accent" (click)="onAddSeats()">Add Seats</button>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</div>

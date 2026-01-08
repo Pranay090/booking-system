@@ -1,0 +1,49 @@
+<div class="booking-container">
+    <mat-toolbar color="primary">
+        <button mat-icon-button routerLink="/events">
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+        <span>Book Tickets</span>
+    </mat-toolbar>
+
+    <div class="content">
+        <!-- Step 1: Select Show -->
+        <div *ngIf="!selectedShowId">
+            <h2>Select Show Time</h2>
+            <div class="shows-list">
+                <mat-card *ngFor="let show of shows" (click)="onSelectShow(show.id)" class="show-card">
+                    <mat-card-content>
+                        <h3>{{show.show_time | date:'medium'}}</h3>
+                    </mat-card-content>
+                </mat-card>
+                <p *ngIf="shows.length === 0">No shows available.</p>
+            </div>
+        </div>
+
+        <!-- Step 2: Select Seats -->
+        <div *ngIf="selectedShowId">
+            <div class="step-header">
+                <h2>Select Seats</h2>
+                <button mat-button (click)="selectedShowId = null">Change Show</button>
+            </div>
+
+            <div class="screen">SCREEN</div>
+
+            <div class="seats-grid">
+                <div *ngFor="let seat of seats" class="seat" [class.booked]="seat.status === 'BOOKED'"
+                    [class.selected]="isSelected(seat.id)" (click)="toggleSeat(seat)">
+                    {{seat.seat_number}}
+                </div>
+            </div>
+            <p *ngIf="seats.length === 0">No seats configuration found.</p>
+
+            <div class="actions">
+                <span>Selected: {{selectedSeats.length}}</span>
+                <button mat-raised-button color="accent" [disabled]="selectedSeats.length === 0"
+                    (click)="confirmBooking()">
+                    Confirm Booking
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

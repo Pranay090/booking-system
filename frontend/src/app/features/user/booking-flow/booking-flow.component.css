@@ -1,0 +1,94 @@
+.booking-container {
+  min-height: 100vh;
+}
+
+.content {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.shows-list {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.show-card {
+  cursor: pointer;
+  background: #333;
+  width: 200px;
+  text-align: center;
+}
+
+.show-card:hover {
+  background: #444;
+}
+
+.step-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.screen {
+  background: #555;
+  color: #aaa;
+  text-align: center;
+  padding: 10px;
+  margin-bottom: 40px;
+  border-radius: 0 0 50% 50%; /* Curved screen effect */
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.seats-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.seat {
+  width: 40px;
+  height: 40px;
+  background: #4caf50; /* Available */
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 12px;
+  user-select: none;
+}
+
+.seat.booked {
+  background: #f44336; /* Booked */
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.seat.selected {
+  background: #ffc107; /* Selected */
+  color: #000;
+  transform: scale(1.1);
+}
+
+.seat:hover:not(.booked) {
+  opacity: 0.8;
+}
+
+.actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #222;
+  padding: 20px;
+  border-radius: 8px;
+  position: sticky;
+  bottom: 20px;
+}
