@@ -1,14 +1,22 @@
 const express = require('express');
 const pool = require('../db');
 const { verifyToken, verifyAdmin } = require('../middleware/auth');
+const { getOrFetch, invalidate } = require('../cache');
 
 const router = express.Router();
 
-// Get all events
+// Get all events (with caching)
 router.get('/events', async (req, res) => {
     try {
-        const result = await pool.query('SELECT * FROM events ORDER BY id ASC');
-        res.json(result.rows);
+        const data = await getOrFetch(
+            'events:all',
+            async () => {
+                const result = await pool.query('SELECT * FROM events ORDER BY id ASC');
+                return result.rows;
+            },
+            60 // TTL: 60 seconds
+        );
+        res.json(data);
     } catch (e) {
         res.status(500).json({ error: e.message });
     }
@@ -19,6 +27,10 @@ router.post('/events', verifyAdmin, async (req, res) => {
     const { name } = req.body;
     try {
         const result = await pool.query('INSERT INTO events (name) VALUES ($1) RETURNING *', [name]);
+        
+        // Invalidate events cache
+        await invalidate('events:all');
+        
         res.json(result.rows[0]);
     } catch (e) {
         res.status(500).json({ error: e.message });
@@ -35,12 +47,19 @@ router.get('/shows', async (req, res) => {
     }
 });
 
-// Get shows for an event
+// Get shows for an event (with caching)
 router.get('/events/:id/shows', async (req, res) => {
     const { id } = req.params;
     try {
-        const result = await pool.query('SELECT * FROM shows WHERE event_id = $1 ORDER BY show_time ASC', [id]);
-        res.json(result.rows);
+        const data = await getOrFetch(
+            `events:${id}:shows`,
+            async () => {
+                const result = await pool.query('SELECT * FROM shows WHERE event_id = $1 ORDER BY show_time ASC', [id]);
+                return result.rows;
+            },
+            60 // TTL: 60 seconds
+        );
+        res.json(data);
     } catch (e) {
         res.status(500).json({ error: e.message });
     }
@@ -54,6 +73,10 @@ router.post('/shows', verifyAdmin, async (req, res) => {
             'INSERT INTO shows (event_id, show_time) VALUES ($1, $2) RETURNING *',
             [event_id, show_time]
         );
+        
+        // Invalidate shows cache for this event
+        await invalidate(`events:${event_id}:shows`);
+        
         res.json(result.rows[0]);
     } catch (e) {
         res.status(500).json({ error: e.message });
@@ -82,6 +105,10 @@ router.post('/seats/bulk', verifyAdmin, async (req, res) => {
         }
 
         await client.query('COMMIT');
+        
+        // Invalidate seat layout cache for this show
+        await invalidate(`shows:${show_id}:seat_layout`);
+        
         res.json({ message: `Created ${seats.length} seats` });
     } catch (e) {
         await client.query('ROLLBACK');
