@@ -92,6 +92,14 @@
                             <mat-label>Count (e.g. 50)</mat-label>
                             <input matInput type="number" [(ngModel)]="seatCount">
                         </mat-form-field>
+                        <mat-form-field class="full-width">
+                            <mat-label>Base Price</mat-label>
+                            <input matInput type="number" [(ngModel)]="seatBasePrice" min="0" step="0.01">
+                        </mat-form-field>
+                        <mat-form-field class="full-width">
+                            <mat-label>Least Selling Price</mat-label>
+                            <input matInput type="number" [(ngModel)]="seatLeastPrice" min="0" step="0.01">
+                        </mat-form-field>
                         <button mat-raised-button color="accent" (click)="onAddSeats()">Add Seats</button>
                     </mat-card-content>
                 </mat-card>

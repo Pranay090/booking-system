@@ -33,16 +33,32 @@
                 <div *ngFor="let seat of seats" class="seat" [class.booked]="seat.status === 'BOOKED'"
                     [class.selected]="isSelected(seat.id)" (click)="toggleSeat(seat)">
                     {{seat.seat_number}}
+                    <div class="seat-price">₹{{seat.base_price}}</div>
                 </div>
             </div>
             <p *ngIf="seats.length === 0">No seats configuration found.</p>
 
             <div class="actions">
                 <span>Selected: {{selectedSeats.length}}</span>
+                <span style="margin-left: 16px;">Total: ₹{{getSelectedTotal() | number:'1.2-2'}}</span>
                 <button mat-raised-button color="accent" [disabled]="selectedSeats.length === 0"
                     (click)="confirmBooking()">
                     Confirm Booking
                 </button>
+            </div>
+
+            <!-- Booking Confirmation Popup -->
+            <div *ngIf="showPopup" class="popup-overlay">
+                <div class="popup">
+                    <h3>Confirm Booking</h3>
+                    <p>You are about to book <b>{{selectedSeats.length}}</b> seat(s) for <b>₹{{totalPrice | number:'1.2-2'}}</b>.</p>
+                    <p>Your credits: <mat-icon>account_balance_wallet</mat-icon> <b>{{credits | number:'1.2-2'}}</b></p>
+                    <p *ngIf="credits < totalPrice" style="color: red;">Insufficient credits!</p>
+                    <div class="popup-actions">
+                        <button mat-button (click)="cancelPopup()">Cancel</button>
+                        <button mat-raised-button color="primary" [disabled]="credits < totalPrice" (click)="payAndBook()">Pay & Book</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

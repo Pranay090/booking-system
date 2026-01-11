@@ -12,7 +12,7 @@ router.get('/shows/:showId/seats', async (req, res) => {
         // Get seats with dynamic status from DB
         const result = await pool.query(
             `
-            SELECT id, seat_number, status
+            SELECT id, seat_number, status, base_price, least_selling_price
             FROM seats
             WHERE show_id = $1
             ORDER BY

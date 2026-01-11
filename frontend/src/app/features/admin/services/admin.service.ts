@@ -22,9 +22,9 @@ export class AdminService {
         return this.http.post(`${this.apiUrl}/api/shows`, data);
     }
 
-    // Bulk create seats
-    createSeats(data: any): Observable<any> {
-        return this.http.post(`${this.apiUrl}/api/seats/bulk`, data);
+    // Bulk create seats with price
+    createSeats(showId: number, seats: any[]): Observable<any> {
+        return this.http.post(`${this.apiUrl}/admin/shows/${showId}/seats`, { seats });
     }
 
     getEvents(): Observable<any[]> {

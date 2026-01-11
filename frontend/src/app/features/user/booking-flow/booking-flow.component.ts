@@ -8,7 +8,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     selector: 'app-booking-flow',
     templateUrl: './booking-flow.component.html',
     styleUrls: ['./booking-flow.component.css'],
-    standalone: false
+    standalone : false
 })
 export class BookingFlowComponent implements OnInit {
     eventId: number | null = null;
@@ -17,6 +17,9 @@ export class BookingFlowComponent implements OnInit {
 
     selectedShowId: number | null = null;
     selectedSeats: number[] = []; // IDs
+    showPopup: boolean = false;
+    totalPrice: number = 0;
+    credits: number = 0;
 
     constructor(
         private route: ActivatedRoute,
@@ -43,6 +46,16 @@ export class BookingFlowComponent implements OnInit {
         this.selectedShowId = showId;
         this.selectedSeats = [];
         this.userService.getSeats(showId).subscribe(data => this.seats = data);
+        this.loadCredits();
+    }
+
+    loadCredits() {
+        // Use CreditsService directly or via userService if added
+        fetch('http://localhost:3000/user/credits', {
+            headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+        })
+        .then(res => res.json())
+        .then(data => this.credits = data.credits || 0);
     }
 
     toggleSeat(seat: any) {
@@ -60,21 +73,39 @@ export class BookingFlowComponent implements OnInit {
         return this.selectedSeats.includes(seatId);
     }
 
+    getSelectedTotal(): number {
+        return this.selectedSeats.reduce((sum, id) => {
+            const seat = this.seats.find((s: any) => s.id === id);
+            return sum + (seat ? Number(seat.base_price) : 0);
+        }, 0);
+    }
+
     confirmBooking() {
         if (!this.selectedShowId || this.selectedSeats.length === 0) return;
+        // Calculate total price
+        this.totalPrice = this.selectedSeats.reduce((sum, id) => {
+            const seat = this.seats.find((s: any) => s.id === id);
+            return sum + (seat ? Number(seat.base_price) : 0);
+        }, 0);
+        this.showPopup = true;
+    }
 
+    cancelPopup() {
+        this.showPopup = false;
+    }
+
+    payAndBook() {
+        if (!this.selectedShowId || this.selectedSeats.length === 0) return;
         const user = this.authService.currentUserValue;
         if (!user) {
             this.router.navigate(['/login']);
             return;
         }
-
         const payload = {
             showId: this.selectedShowId,
             seatIds: this.selectedSeats,
             userId: user.id
         };
-
         this.userService.bookSeats(payload).subscribe({
             next: (res) => {
                 this.snackBar.open('Booking Confirm! ID: ' + res.bookingId, 'Close', { duration: 5000 });
@@ -82,9 +113,9 @@ export class BookingFlowComponent implements OnInit {
             },
             error: (err) => {
                 this.snackBar.open('Booking Failed: ' + err.error.error, 'Close', { duration: 3000 });
-                // Reload seats to show updated status
                 if (this.selectedShowId) this.onSelectShow(this.selectedShowId);
             }
         });
+        this.showPopup = false;
     }
 }

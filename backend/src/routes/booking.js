@@ -44,19 +44,36 @@ router.post('/book', async (req, res) => {
         throw new Error('Seat already booked');
       }
 
+
+      // Get seat prices
+      const seatRes = await client.query(
+        'SELECT id, base_price FROM seats WHERE id = ANY($1)',
+        [seatIds]
+      );
+      const seatPrices = {};
+      seatRes.rows.forEach(row => { seatPrices[row.id] = row.base_price; });
+      const totalPrice = seatIds.reduce((sum, id) => sum + Number(seatPrices[id] || 0), 0);
+
+      // Check user credits
+      const userRes = await client.query('SELECT credits FROM users WHERE id = $1 FOR UPDATE', [userId]);
+      if (!userRes.rows.length) throw new Error('User not found');
+      if (Number(userRes.rows[0].credits) < totalPrice) throw new Error('Insufficient credits');
+
+      // Deduct credits
+      await client.query('UPDATE users SET credits = credits - $1 WHERE id = $2', [totalPrice, userId]);
+
       // Create booking
       const bookingRes = await client.query(
         'INSERT INTO bookings (show_id, user_id) VALUES ($1, $2) RETURNING id',
         [showId, userId]
       );
-
       const bookingId = bookingRes.rows[0].id;
 
-      // log to booking_seats
+      // log to booking_seats with price
       for (const seatId of seatIds) {
         await client.query(
-          'INSERT INTO booking_seats (booking_id, seat_id) VALUES ($1, $2)',
-          [bookingId, seatId]
+          'INSERT INTO booking_seats (booking_id, seat_id, price) VALUES ($1, $2, $3)',
+          [bookingId, seatId, seatPrices[seatId]]
         );
       }
 
@@ -71,7 +88,7 @@ router.post('/book', async (req, res) => {
       // 3 Release Redis locks after success
       await redis.del(acquiredLocks);
 
-      res.json({ bookingId });
+      res.json({ bookingId, totalPrice });
 
     } catch (err) {
       await client.query('ROLLBACK');

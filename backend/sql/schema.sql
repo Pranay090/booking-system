@@ -14,6 +14,8 @@ CREATE TABLE seats (
   show_id INT REFERENCES shows(id),
   seat_number TEXT NOT NULL,
   status TEXT CHECK (status IN ('AVAILABLE','BOOKED'))
+  ,base_price NUMERIC(10,2) NOT NULL
+  ,least_selling_price NUMERIC(10,2) NOT NULL
 );
 
 CREATE TABLE users (
@@ -21,7 +23,8 @@ CREATE TABLE users (
   email TEXT UNIQUE NOT NULL,
   password_hash TEXT NOT NULL,
   role TEXT NOT NULL CHECK (role IN ('admin', 'user')),
-  created_at TIMESTAMP DEFAULT NOW()
+  created_at TIMESTAMP DEFAULT NOW(),
+  credits NUMERIC(12,2) NOT NULL DEFAULT 0
 );
 
 CREATE TABLE bookings (
@@ -34,5 +37,6 @@ CREATE TABLE bookings (
 CREATE TABLE booking_seats (
   booking_id INT REFERENCES bookings(id),
   seat_id INT REFERENCES seats(id),
+  price NUMERIC(10,2) NOT NULL,
   PRIMARY KEY (booking_id, seat_id)
 );

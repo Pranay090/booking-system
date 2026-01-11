@@ -1,7 +1,17 @@
 <div class="user-container">
+
     <mat-toolbar color="primary">
         <span>Events</span>
         <span class="spacer"></span>
+        <span style="margin-right: 16px; display: flex; align-items: center;">
+            <mat-icon>account_balance_wallet</mat-icon>
+            <span style="margin: 0 4px; font-weight: bold;">{{credits | number:'1.2-2'}}</span>
+            <mat-icon>monetization_on</mat-icon>
+        </span>
+        <mat-form-field style="width: 100px; margin-right: 8px;">
+            <input matInput type="number" [(ngModel)]="addAmount" min="1" placeholder="Add Coins">
+        </mat-form-field>
+        <button mat-raised-button color="accent" (click)="onAddCredits()">Add</button>
         <button mat-button (click)="logout()">Logout</button>
     </mat-toolbar>
 

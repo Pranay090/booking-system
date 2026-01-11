@@ -25,6 +25,8 @@ export class AdminDashboardComponent implements OnInit {
     seatShowId: number | null = null;
     seatCount = 0;
     seatPrefix = 'A';
+    seatBasePrice: number = 0;
+    seatLeastPrice: number = 0;
 
     eventsList: any[] = [];
 
@@ -85,14 +87,14 @@ export class AdminDashboardComponent implements OnInit {
 
     // Create Seats
     onAddSeats() {
-        if (!this.seatShowId || this.seatCount <= 0) return;
+        if (!this.seatShowId || this.seatCount <= 0 || this.seatBasePrice <= 0 || this.seatLeastPrice < 0) return;
 
         const seats = [];
         for (let i = 1; i <= this.seatCount; i++) {
-            seats.push({ seat_number: `${this.seatPrefix}${i}` });
+            seats.push({ seat_number: `${this.seatPrefix}${i}`, base_price: this.seatBasePrice, least_selling_price: this.seatLeastPrice });
         }
 
-        this.adminService.createSeats({ show_id: this.seatShowId, seats }).subscribe(() => {
+        this.adminService.createSeats(this.seatShowId, seats).subscribe(() => {
             this.snackBar.open(`${this.seatCount} seats added`, 'Close', { duration: 3000 });
             if (this.currentTable === 'seats') this.loadTable('seats');
         });
