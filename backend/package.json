@@ -5,7 +5,9 @@
   "scripts": {
     "start": "node src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "pricing-job": "node scripts/run_pricing_job.js",
+    "test:degradation": "node scripts/test_degradation.js"
   },
   "keywords": [],
   "author": "",
