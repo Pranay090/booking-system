@@ -1,6 +1,7 @@
 const express = require('express');
 const pool = require('../db');
 const redis = require('../redis');
+const { getMultiplier } = require('../pricing');
 
 const router = express.Router();
 
@@ -34,15 +35,23 @@ router.post('/book', async (req, res) => {
     try {
       await client.query('BEGIN');
 
-      // check for availability
+      // Get pricing multiplier (defaults to 1.0 if not found)
+      const multiplier = await getMultiplier(showId);
+
+      // check for availability and get base prices
       const check = await client.query(
-        'SELECT id FROM seats WHERE id = ANY($1) AND status = $2 FOR UPDATE',
+        'SELECT id, base_price FROM seats WHERE id = ANY($1) AND status = $2 FOR UPDATE',
         [seatIds, 'AVAILABLE']
       );
 
       if (check.rows.length !== seatIds.length) {
         throw new Error('Seat already booked');
       }
+
+      // Calculate total price
+      const totalPrice = check.rows.reduce((sum, seat) => {
+        return sum + (parseFloat(seat.base_price) * multiplier);
+      }, 0);
 
       // Create booking
       const bookingRes = await client.query(
@@ -71,7 +80,11 @@ router.post('/book', async (req, res) => {
       // 3 Release Redis locks after success
       await redis.del(acquiredLocks);
 
-      res.json({ bookingId });
+      res.json({ 
+        bookingId, 
+        totalPrice: Math.round(totalPrice * 100) / 100,
+        multiplier 
+      });
 
     } catch (err) {
       await client.query('ROLLBACK');

@@ -13,7 +13,8 @@ CREATE TABLE seats (
   id SERIAL PRIMARY KEY,
   show_id INT REFERENCES shows(id),
   seat_number TEXT NOT NULL,
-  status TEXT CHECK (status IN ('AVAILABLE','BOOKED'))
+  status TEXT CHECK (status IN ('AVAILABLE','BOOKED')),
+  base_price NUMERIC(10,2) NOT NULL DEFAULT 100.00
 );
 
 CREATE TABLE users (
@@ -35,4 +36,10 @@ CREATE TABLE booking_seats (
   booking_id INT REFERENCES bookings(id),
   seat_id INT REFERENCES seats(id),
   PRIMARY KEY (booking_id, seat_id)
+);
+
+CREATE TABLE pricing_multipliers (
+  show_id BIGINT PRIMARY KEY REFERENCES shows(id),
+  multiplier NUMERIC(3,2) NOT NULL,
+  generated_at TIMESTAMP NOT NULL
 );
