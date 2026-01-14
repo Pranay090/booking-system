@@ -14,7 +14,8 @@ export class UserDashboardComponent {
     events: any[] = [];
     credits: number = 0;
     addAmount: number = 0;
-
+    showLogoutPopUp = false;
+    showAddPopUp = false;
 
     constructor(private userService: UserService, private router: Router, private authService: AuthService, private creditsService: CreditsService) {
         this.userService.getEvents().subscribe(data => this.events = data);
@@ -31,7 +32,16 @@ export class UserDashboardComponent {
                 this.credits = res.credits;
                 this.addAmount = 0;
             });
+            this.showAddPopUp = false;
         }
+    }
+
+    onAdd() {
+        this.showAddPopUp = true;
+    }
+
+    onCancelPopup() {
+        this.showAddPopUp = false;
     }
 
     onBook(eventId: number) {
@@ -42,4 +52,12 @@ export class UserDashboardComponent {
         this.authService.logout();
         this.router.navigate(['/login']);
     }
+
+    onLogout() {
+        this.showLogoutPopUp = true;
+    }
+
+    cancelPopup() {
+        this.showLogoutPopUp = false;
+    }    
 }

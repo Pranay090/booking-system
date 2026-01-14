@@ -89,3 +89,20 @@ html, body {
   border-radius: 8px !important;
 }
 
+.mat-mdc-tooltip {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* Chrome, Edge, Safari */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}

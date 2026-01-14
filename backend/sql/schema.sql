@@ -13,9 +13,9 @@ CREATE TABLE seats (
   id SERIAL PRIMARY KEY,
   show_id INT REFERENCES shows(id),
   seat_number TEXT NOT NULL,
-  status TEXT CHECK (status IN ('AVAILABLE','BOOKED'))
-  ,base_price NUMERIC(10,2) NOT NULL
-  ,least_selling_price NUMERIC(10,2) NOT NULL
+  status TEXT CHECK (status IN ('AVAILABLE','BOOKED')),
+  base_price NUMERIC(10,2) NOT NULL,
+  least_selling_price NUMERIC(10,2) NOT NULL
 );
 
 CREATE TABLE users (

@@ -27,23 +27,23 @@ INSERT INTO shows (event_id, show_time) VALUES
 
 -- Insert Seats for Show 1 (Rock Concert, Day 1)
 -- Rows A-E, Seats 1-10 (50 seats)
-INSERT INTO seats (show_id, seat_number, status)
-SELECT 1, chr(row) || num, 'AVAILABLE'
+INSERT INTO seats (show_id, seat_number, status, base_price, least_selling_price)
+SELECT 1, chr(row) || num, 'AVAILABLE', 100.00, 80.00
 FROM generate_series(65, 69) AS row, generate_series(1, 10) AS num;
 
 -- Insert Seats for Show 2 (Rock Concert, Day 2)
-INSERT INTO seats (show_id, seat_number, status)
-SELECT 2, chr(row) || num, 'AVAILABLE'
+INSERT INTO seats (show_id, seat_number, status, base_price, least_selling_price)
+SELECT 2, chr(row) || num, 'AVAILABLE', 100.00, 80.00
 FROM generate_series(65, 69) AS row, generate_series(1, 10) AS num;
 
 -- Insert Seats for Show 3 (Pop Festival)
-INSERT INTO seats (show_id, seat_number, status)
-SELECT 3, chr(row) || num, 'AVAILABLE'
+INSERT INTO seats (show_id, seat_number, status, base_price, least_selling_price)
+SELECT 3, chr(row) || num, 'AVAILABLE', 150.00, 120.00
 FROM generate_series(65, 69) AS row, generate_series(1, 10) AS num;
 
 -- Insert Seats for Show 4 (Jazz Night)
-INSERT INTO seats (show_id, seat_number, status)
-SELECT 4, chr(row) || num, 'AVAILABLE'
+INSERT INTO seats (show_id, seat_number, status, base_price, least_selling_price)
+SELECT 4, chr(row) || num, 'AVAILABLE', 80.00, 60.00
 FROM generate_series(65, 69) AS row, generate_series(1, 10) AS num;
 
 -- Randomly book some seats to simulate usage

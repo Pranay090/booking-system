@@ -133,3 +133,26 @@ button[type="submit"]:hover, button[color="primary"]:hover {
   box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
   transform: translateY(-2px);
 }
+
+.popup-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.popup {
+  background: #48426f;
+  border-radius: 12px;
+  padding: 32px 24px;
+  min-width: 320px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  text-align: center;
+}
+.popup-actions {
+  margin-top: 24px;
+  display: flex;
+  justify-content: space-between;
+}

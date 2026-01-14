@@ -30,11 +30,18 @@
             <div class="screen">SCREEN</div>
 
             <div class="seats-grid">
-                <div *ngFor="let seat of seats" class="seat" [class.booked]="seat.status === 'BOOKED'"
-                    [class.selected]="isSelected(seat.id)" (click)="toggleSeat(seat)">
-                    {{seat.seat_number}}
-                    <div class="seat-price">₹{{seat.base_price}}</div>
-                </div>
+                @for (seat of seats; track seat.id) {
+                <button
+                    class="seat"
+                    [class.booked]="seat.status === 'BOOKED'"
+                    [class.selected]="isSelected(seat.id)"
+                    (click)="toggleSeat(seat)"
+                    matTooltip="₹{{ seat.base_price }}"
+                    >
+                    {{ seat.seat_number }}
+                </button>
+            }
+
             </div>
             <p *ngIf="seats.length === 0">No seats configuration found.</p>
 
@@ -52,7 +59,7 @@
                 <div class="popup">
                     <h3>Confirm Booking</h3>
                     <p>You are about to book <b>{{selectedSeats.length}}</b> seat(s) for <b>₹{{totalPrice | number:'1.2-2'}}</b>.</p>
-                    <p>Your credits: <mat-icon>account_balance_wallet</mat-icon> <b>{{credits | number:'1.2-2'}}</b></p>
+                    <p>Your credits:<b>{{credits | number:'1.2-2'}}</b></p>
                     <p *ngIf="credits < totalPrice" style="color: red;">Insufficient credits!</p>
                     <div class="popup-actions">
                         <button mat-button (click)="cancelPopup()">Cancel</button>

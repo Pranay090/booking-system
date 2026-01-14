@@ -15,7 +15,7 @@ export class AdminDashboardComponent implements OnInit {
     currentTable = 'events';
     tableData: any[] = [];
     displayedColumns: string[] = [];
-
+    showPopUp = false;
     // Forms
     eventName = '';
 
@@ -104,4 +104,13 @@ export class AdminDashboardComponent implements OnInit {
         this.authService.logout();
         this.router.navigate(['/login']);
     }
+
+    onLogout() {
+        this.showPopUp = true;
+    }
+
+    cancelPopup() {
+        this.showPopUp = false;
+    }
+
 }

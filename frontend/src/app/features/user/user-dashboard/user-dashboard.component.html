@@ -8,15 +8,15 @@
             <span style="margin: 0 4px; font-weight: bold;">{{credits | number:'1.2-2'}}</span>
             <mat-icon>monetization_on</mat-icon>
         </span>
-        <mat-form-field style="width: 100px; margin-right: 8px;">
-            <input matInput type="number" [(ngModel)]="addAmount" min="1" placeholder="Add Coins">
-        </mat-form-field>
-        <button mat-raised-button color="accent" (click)="onAddCredits()">Add</button>
-        <button mat-button (click)="logout()">Logout</button>
+        <button mat-button (click)="onLogout()">Logout</button>
     </mat-toolbar>
 
     <div class="content">
-        <h2>Upcoming Events</h2>
+        <div class="sub-header">
+            <h2>Upcoming Events</h2>
+            <button mat-raised-button color="accent" (click)="onAdd()">Add Free Credits</button>
+        </div>
+
         <div class="events-grid">
             <mat-card *ngFor="let event of events" class="event-card">
                 <mat-card-header>
@@ -28,4 +28,34 @@
             </mat-card>
         </div>
     </div>
+
+    <!-- Logout Popup -->
+    @if(showLogoutPopUp){
+        <div class="popup-overlay">
+            <div class="popup">
+                <h3>Are you sure you want to Logout?</h3>
+                <p>Your current session will be discarded</p>
+                <div class="popup-actions">
+                    <button mat-button (click)="cancelPopup()">Cancel</button>
+                    <button mat-raised-button color="primary" (click)="logout()">Logout</button>
+                </div>
+            </div>
+        </div>
+    }
+    @if(showAddPopUp){
+    <div class="popup-overlay">
+        <div class="popup">
+            <h3>Add more credits?</h3>
+            <p>Just enter the number of credits you wish to have :</p>
+            <mat-form-field style="width: 100px; margin-right: 8px;">
+                <input matInput type="number" [(ngModel)]="addAmount" min="1" placeholder="Add Coins">
+            </mat-form-field>
+            <div class="popup-actions">
+                <button mat-button (click)="onCancelPopup()">Cancel</button>
+                <button mat-raised-button color="primary" (click)="onAddCredits()">Done</button>
+            </div>
+        </div>
+    </div>
+    }
+
 </div>

@@ -6,6 +6,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
 import { BookingFlowComponent } from './booking-flow/booking-flow.component';
 import { FormsModule } from '@angular/forms';
+import {MatTooltipModule} from '@angular/material/tooltip'; 
 
 const routes: Routes = [
     { path: '', component: UserDashboardComponent },
@@ -21,7 +22,8 @@ const routes: Routes = [
         CommonModule,
         SharedModule,
         RouterModule.forChild(routes),
-        FormsModule
+        FormsModule,
+        MatTooltipModule
     ],
     providers: [DecimalPipe]
 })
