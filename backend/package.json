@@ -4,8 +4,10 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/index.js",
+    "worker": "node src/pricing-worker.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "dev:worker": "nodemon src/pricing-worker.js"
   },
   "keywords": [],
   "author": "",

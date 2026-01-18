@@ -1,6 +1,7 @@
 const express = require('express');
 const pool = require('../db');
 const { getOrFetch } = require('../cache');
+const PricingEngine = require('../services/pricing-engine');
 
 const router = express.Router();
 
@@ -22,7 +23,24 @@ router.get('/shows/:showId/seats', async (req, res) => {
             [showId]
         );
 
-        res.json(result.rows);
+        // Apply dynamic pricing to all seats
+        const seatsWithPricing = await PricingEngine.getPricesForSeats(showId, result.rows);
+        
+        // Merge pricing data with seat data
+        const response = result.rows.map(seat => {
+            const pricingData = seatsWithPricing.find(p => p.id === seat.id);
+            return {
+                id: seat.id,
+                seat_number: seat.seat_number,
+                status: seat.status,
+                base_price: seat.base_price,
+                least_selling_price: seat.least_selling_price,
+                current_price: pricingData?.price || seat.base_price,
+                multiplier: pricingData?.multiplier || 1.0
+            };
+        });
+
+        res.json(response);
     } catch (e) {
         res.status(500).json({ error: e.message });
     }
