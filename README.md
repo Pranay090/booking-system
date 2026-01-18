@@ -8,3 +8,4 @@ docker compose up
 
 For both to stop continers:
 docker compose down 
+
