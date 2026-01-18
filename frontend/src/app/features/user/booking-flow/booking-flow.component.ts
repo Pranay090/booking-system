@@ -76,16 +76,16 @@ export class BookingFlowComponent implements OnInit {
     getSelectedTotal(): number {
         return this.selectedSeats.reduce((sum, id) => {
             const seat = this.seats.find((s: any) => s.id === id);
-            return sum + (seat ? Number(seat.base_price) : 0);
+            return sum + (seat ? Number(seat.current_price || seat.base_price) : 0);
         }, 0);
     }
 
     confirmBooking() {
         if (!this.selectedShowId || this.selectedSeats.length === 0) return;
-        // Calculate total price
+        // Calculate total price using current dynamic price
         this.totalPrice = this.selectedSeats.reduce((sum, id) => {
             const seat = this.seats.find((s: any) => s.id === id);
-            return sum + (seat ? Number(seat.base_price) : 0);
+            return sum + (seat ? Number(seat.current_price || seat.base_price) : 0);
         }, 0);
         this.showPopup = true;
     }
