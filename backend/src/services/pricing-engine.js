@@ -21,7 +21,7 @@ class PricingEngine {
         [showId]
       );
       const totalSeats = parseInt(totalSeatsResult.rows[0]?.total || '0', 10);
-      
+
       if (totalSeats === 0) {
         return 1.0; // No seats, no multiplier
       }
@@ -34,29 +34,29 @@ class PricingEngine {
       ]);
 
       // Calculate demand factors (0 to 1 range)
-      
+
       // 1. Booked percentage (60% weight)
       const bookedPercentage = Math.min(seatsBooked / totalSeats, 1.0);
-      
+
       // 2. Active locks percentage (10% weight)
       const locksPercentage = Math.min(activeLocks / totalSeats, 1.0);
-      
+
       // 3. Velocity ratio (30% weight)
       // If recent velocity is higher than baseline, demand is increasing
-      const velocityRatio = velocity.baseline > 0 
+      const velocityRatio = velocity.baseline > 0
         ? Math.min(velocity.recent / velocity.baseline, 2.0) / 2.0 // Normalize to 0-1
         : 0;
 
       // Weighted demand score (0 to 1)
-      const demandScore = 
-        (bookedPercentage * 0.60) +
+      const demandScore =
+        (bookedPercentage * 0.70) +
         (locksPercentage * 0.10) +
-        (velocityRatio * 0.30);
+        (velocityRatio * 0.20);
 
       // Calculate multiplier
       // demandScore = 0 → multiplier = 0 (will use LSP)
       // demandScore = 1 → multiplier = 1.3
-      const multiplier = demandScore * 1.3;
+      const multiplier = demandScore * 1.75;
 
       return multiplier;
 
@@ -111,7 +111,7 @@ class PricingEngine {
     try {
       const key = `pricing:show:${showId}`;
       const data = await redis.get(key);
-      
+
       if (!data) {
         return null;
       }

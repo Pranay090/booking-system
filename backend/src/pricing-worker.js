@@ -11,18 +11,16 @@ const WORKER_INTERVAL = 30000; // 30 seconds
 
 async function updatePricing() {
   console.log(`[${new Date().toISOString()}] Running pricing update worker...`);
-  
+
   try {
     // Get all active shows (shows that haven't happened yet or are happening today)
     const result = await pool.query(`
       SELECT id, event_id, show_time 
       FROM shows 
-      WHERE show_time >= NOW() - INTERVAL '1 day'
-      ORDER BY id
     `);
 
     const shows = result.rows;
-    
+
     if (shows.length === 0) {
       console.log('  No active shows found for pricing update');
       return;
@@ -35,10 +33,10 @@ async function updatePricing() {
       try {
         // Calculate multiplier
         const multiplier = await PricingEngine.calculateMultiplier(show.id);
-        
+
         // Store pricing snapshot
         await PricingEngine.storePricingSnapshot(show.id, multiplier);
-        
+
         console.log(`  ✓ Show ${show.id}: multiplier = ${multiplier.toFixed(4)}x`);
 
         // Cleanup old demand data
