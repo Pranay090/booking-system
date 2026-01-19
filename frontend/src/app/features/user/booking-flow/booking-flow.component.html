@@ -36,7 +36,7 @@
                     [class.booked]="seat.status === 'BOOKED'"
                     [class.selected]="isSelected(seat.id)"
                     (click)="toggleSeat(seat)"
-                    [matTooltip]="'₹' + (seat.current_price || seat.base_price) + (seat.multiplier > 1.01 ? ' (↑ ' + (seat.multiplier * 100).toFixed(0) + '%)' : seat.multiplier < 0.99 ? ' (base: ₹' + seat.base_price + ')' : '')"
+                    [matTooltip]="'₹' + (seat.current_price || seat.base_price) "
                     >
                     {{ seat.seat_number }}
                 </button>
