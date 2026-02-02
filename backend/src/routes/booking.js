@@ -1,6 +1,8 @@
 const express = require('express');
 const pool = require('../db');
 const redis = require('../redis');
+const DemandTracker = require('../services/demand-tracker');
+const PricingEngine = require('../services/pricing-engine');
 
 const router = express.Router();
 
@@ -47,11 +49,19 @@ router.post('/book', async (req, res) => {
 
       // Get seat prices
       const seatRes = await client.query(
-        'SELECT id, base_price FROM seats WHERE id = ANY($1)',
+        'SELECT id, base_price, least_selling_price FROM seats WHERE id = ANY($1)',
         [seatIds]
       );
+      
+      // Apply dynamic pricing
+      const seatPricingData = await PricingEngine.getPricesForSeats(showId, seatRes.rows);
+      
+      // Create price map
       const seatPrices = {};
-      seatRes.rows.forEach(row => { seatPrices[row.id] = row.base_price; });
+      seatPricingData.forEach(seat => { 
+        seatPrices[seat.id] = seat.price; 
+      });
+      
       const totalPrice = seatIds.reduce((sum, id) => sum + Number(seatPrices[id] || 0), 0);
 
       // Check user credits
@@ -87,6 +97,9 @@ router.post('/book', async (req, res) => {
 
       // 3 Release Redis locks after success
       await redis.del(acquiredLocks);
+
+      // Track demand metrics for dynamic pricing
+      await DemandTracker.trackBooking(showId, seatIds.length);
 
       res.json({ bookingId, totalPrice });
 

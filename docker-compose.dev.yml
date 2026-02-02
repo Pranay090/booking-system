@@ -1,0 +1,51 @@
+version: "3.9"
+
+# Development override file
+# This allows running only specific services from docker-compose
+# Use: docker-compose -f docker-compose.yml -f docker-compose.dev.yml up <services>
+
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: booking
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./backend/sql:/docker-entrypoint-initdb.d
+    networks:
+      - booking-network
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+    networks:
+      - booking-network
+
+  pricing-worker:
+    build:
+      context: ./backend
+    command: npm run worker
+    environment:
+      DB_HOST: postgres
+      DB_USER: admin
+      DB_PASS: admin
+      DB_NAME: booking
+      REDIS_HOST: redis
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - booking-network
+    restart: unless-stopped
+
+networks:
+  booking-network:
+    driver: bridge
+
+volumes:
+  pgdata:

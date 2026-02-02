@@ -9,3 +9,4 @@ docker compose up
 For both to stop continers:
 docker compose down 
 
+time feb 2 15:20 new evet seat cost 91.93

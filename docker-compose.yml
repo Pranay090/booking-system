@@ -30,6 +30,23 @@ services:
     networks:
       - booking-network
 
+  pricing-worker:
+    build:
+      context: ./backend
+    command: npm run worker
+    environment:
+      DB_HOST: postgres
+      DB_USER: admin
+      DB_PASS: admin
+      DB_NAME: booking
+      REDIS_HOST: redis
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - booking-network
+    restart: unless-stopped
+
   postgres:
     image: postgres:15
     environment:
