@@ -3,45 +3,111 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  padding: 20px;
-  background: linear-gradient(135deg, #e5e7eb 0%, #f3f4f6 50%, #e5e7eb 100%);
-  background-size: 200% 200%;
+  padding: 24px;
+  background: var(--bg-primary);
+  background-image: var(--gradient-mesh);
   position: relative;
   overflow: hidden;
+}
+
+/* Animated background orbs */
+.auth-container::before,
+.auth-container::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.5;
+  animation: float 20s ease-in-out infinite;
+}
+
+.auth-container::before {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, var(--primary-500) 0%, transparent 70%);
+  top: -100px;
+  right: -100px;
+}
+
+.auth-container::after {
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, var(--accent-500) 0%, transparent 70%);
+  bottom: -50px;
+  left: -50px;
+  animation-delay: -10s;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(30px, -30px) scale(1.1); }
+  50% { transform: translate(-20px, 20px) scale(0.95); }
+  75% { transform: translate(20px, 40px) scale(1.05); }
 }
 
 .auth-card {
   width: 100%;
-  max-width: 450px;
+  max-width: 440px;
   padding: 0;
-  background: #ffffff !important;
-  border: none;
-  border-radius: 24px !important;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  background: var(--surface-glass) !important;
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl) !important;
+  box-shadow: var(--shadow-xl), 0 0 0 1px rgba(255,255,255,0.05) inset;
   position: relative;
   z-index: 1;
   overflow: hidden;
+  animation: slideUp 0.6s var(--ease-out-expo);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Gradient border accent */
+.auth-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--gradient-primary);
 }
 
 .form-section {
-  padding: 40px 30px;
-  background: #ffffff;
+  padding: 48px 40px;
+  background: transparent;
 }
 
 mat-card-header {
-  margin-bottom: 32px;
+  margin-bottom: 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 mat-card-title {
-  font-size: 32px;
+  font-size: 28px;
   font-weight: 700;
   margin-bottom: 8px;
-  color: #1f2937 !important;
+  color: var(--text-primary) !important;
+  letter-spacing: -0.02em;
 }
 
 mat-card-subtitle {
-  color: #6b7280 !important;
+  color: var(--text-secondary) !important;
   font-size: 15px;
+  font-weight: 400;
 }
 
 .full-width {
@@ -49,30 +115,80 @@ mat-card-subtitle {
   margin-bottom: 20px;
 }
 
+/* Input field styling */
+::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid var(--border-subtle) !important;
+  border-radius: var(--radius-md) !important;
+  padding: 8px 16px !important;
+  transition: all 0.3s var(--ease-out-expo);
+}
+
+::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-color: var(--border-default) !important;
+}
+
+::ng-deep .mat-form-field.mat-focused .mat-form-field-flex {
+  background: rgba(99, 102, 241, 0.05) !important;
+  border-color: var(--primary-500) !important;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+::ng-deep .mat-form-field-label {
+  color: var(--text-muted) !important;
+}
+
+::ng-deep .mat-input-element {
+  color: var(--text-primary) !important;
+}
+
+::ng-deep .mat-form-field-underline {
+  display: none !important;
+}
+
 button[type="submit"] {
-  margin-top: 8px;
-  height: 48px;
-  background: #1f2937 !important;
+  margin-top: 12px;
+  height: 52px;
+  background: var(--gradient-primary) !important;
   color: #fff !important;
   font-weight: 600;
-  border-radius: 8px;
-  transition: all 0.3s ease;
+  font-size: 15px;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s var(--ease-out-expo);
+}
+
+button[type="submit"]::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 button[type="submit"]:not([disabled]):hover {
-  background: #111827 !important;
   transform: translateY(-2px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-glow-primary);
+}
+
+button[type="submit"]:not([disabled]):hover::before {
+  opacity: 1;
 }
 
 button[type="submit"]:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+  filter: grayscale(0.3);
 }
 
 .divider {
   text-align: center;
-  margin: 24px 0;
+  margin: 28px 0;
   position: relative;
 }
 
@@ -83,35 +199,40 @@ button[type="submit"]:disabled {
   left: 0;
   right: 0;
   height: 1px;
-  background: #e5e7eb;
+  background: linear-gradient(90deg, transparent, var(--border-default), transparent);
 }
 
 .divider span {
-  background: #ffffff;
-  padding: 0 16px;
-  color: #6b7280;
-  font-size: 14px;
+  background: var(--bg-secondary);
+  padding: 0 20px;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   position: relative;
   z-index: 1;
 }
 
 .google-btn {
-  height: 48px;
-  border: 1px solid #e5e7eb !important;
-  background: #ffffff !important;
-  color: #1f2937 !important;
+  height: 52px;
+  border: 1px solid var(--border-default) !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+  color: var(--text-primary) !important;
   font-weight: 500;
-  border-radius: 8px;
+  font-size: 15px;
+  border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 12px;
-  transition: all 0.3s ease;
+  transition: all 0.3s var(--ease-out-expo);
 }
 
 .google-btn:hover {
-  background: #f9fafb !important;
-  border-color: #d1d5db !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: var(--border-strong) !important;
+  transform: translateY(-2px);
 }
 
 .google-icon {
@@ -120,20 +241,41 @@ button[type="submit"]:disabled {
 }
 
 mat-card-actions {
-  margin-top: 24px;
+  margin-top: 28px;
+  display: flex;
+  justify-content: center;
 }
 
 .signup-text {
-  color: #6b7280;
+  color: var(--text-secondary);
   font-size: 14px;
 }
 
 .signup-text a {
-  color: #6366f1;
+  color: var(--primary-400);
   text-decoration: none;
   font-weight: 600;
+  margin-left: 4px;
+  transition: all 0.2s ease;
 }
 
 .signup-text a:hover {
+  color: var(--primary-300);
   text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .auth-card {
+    max-width: 100%;
+    border-radius: var(--radius-lg) !important;
+  }
+  
+  .form-section {
+    padding: 36px 24px;
+  }
+  
+  mat-card-title {
+    font-size: 24px;
+  }
 }

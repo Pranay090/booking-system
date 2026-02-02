@@ -1,20 +1,26 @@
 <div class="user-container">
 
     <mat-toolbar color="primary">
-        <span>Events</span>
+        <span class="toolbar-title">Events</span>
         <span class="spacer"></span>
-        <span style="margin-right: 16px; display: flex; align-items: center;">
+        <span class="credits-display">
             <mat-icon>account_balance_wallet</mat-icon>
-            <span style="margin: 0 4px; font-weight: bold;">{{credits | number:'1.2-2'}}</span>
-            <mat-icon>monetization_on</mat-icon>
+            <span class="credits-amount">{{credits | number:'1.2-2'}}</span>
+            <mat-icon class="coin-icon">monetization_on</mat-icon>
         </span>
-        <button mat-button (click)="onLogout()">Logout</button>
+        <button mat-button class="logout-btn" (click)="onLogout()">
+            <mat-icon>logout</mat-icon>
+            Logout
+        </button>
     </mat-toolbar>
 
     <div class="content">
         <div class="sub-header">
             <h2>Upcoming Events</h2>
-            <button mat-raised-button color="accent" (click)="onAdd()">Add Free Credits</button>
+            <button mat-raised-button color="accent" (click)="onAdd()">
+                <mat-icon>add_circle</mat-icon>
+                Add Free Credits
+            </button>
         </div>
 
         <div class="events-grid">

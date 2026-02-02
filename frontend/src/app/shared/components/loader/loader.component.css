@@ -4,4 +4,41 @@
   left: 0;
   width: 100%;
   z-index: 9999;
+  height: 4px;
+  overflow: hidden;
+}
+
+/* Enhanced progress bar styling */
+::ng-deep .loader-overlay .mat-progress-bar {
+  height: 4px !important;
+  background: var(--bg-secondary) !important;
+}
+
+::ng-deep .loader-overlay .mat-progress-bar-fill::after {
+  background: var(--gradient-primary) !important;
+}
+
+::ng-deep .loader-overlay .mat-progress-bar-buffer {
+  background: rgba(99, 102, 241, 0.15) !important;
+}
+
+/* Add subtle glow effect */
+.loader-overlay::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(99, 102, 241, 0.4) 50%, 
+    transparent 100%);
+  animation: loaderGlow 1.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes loaderGlow {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
 }
