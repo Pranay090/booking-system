@@ -7,7 +7,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
     selector: 'app-register',
     templateUrl: './register.component.html',
-    styleUrls: ['./register.component.css'], ///login/login.component.css // Reuse styles or copy
+    styleUrls: ['./register.component.css'],
     standalone: false
 })
 export class RegisterComponent {
@@ -43,5 +43,9 @@ export class RegisterComponent {
                 }
             });
         }
+    }
+
+    signUpWithGoogle() {
+        this.authService.loginWithGoogle();
     }
 }

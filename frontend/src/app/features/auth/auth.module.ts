@@ -5,10 +5,12 @@ import { SharedModule } from '../../shared/shared.module';
 
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { AuthCallbackComponent } from './auth-callback/auth-callback.component';
 
 const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
+    { path: 'auth-callback', component: AuthCallbackComponent },
     { path: '', redirectTo: 'login', pathMatch: 'full' }
 ];
 
@@ -19,6 +21,7 @@ const routes: Routes = [
     ],
     imports: [
         CommonModule,
+        AuthCallbackComponent,
         SharedModule,
         RouterModule.forChild(routes)
     ]

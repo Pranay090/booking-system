@@ -44,4 +44,8 @@ export class LoginComponent {
             });
         }
     }
+
+    loginWithGoogle() {
+        this.authService.loginWithGoogle();
+    }
 }

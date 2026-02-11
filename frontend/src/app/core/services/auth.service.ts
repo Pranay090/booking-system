@@ -45,6 +45,26 @@ export class AuthService {
         );
     }
 
+    // Initialize Google OAuth login
+    loginWithGoogle() {
+        window.location.href = `${this.apiUrl}/google`;
+    }
+
+    // Handle OAuth callback from backend
+    handleOAuthCallback(token: string, role: string): void {
+        if (token) {
+            localStorage.setItem('token', token);
+            this.loadUser();
+            if (role === 'admin') {
+                this.router.navigate(['/admin']);
+            } else {
+                this.router.navigate(['/events']);
+            }
+        } else {
+            this.router.navigate(['/login'], { queryParams: { error: 'authentication_failed' } });
+        }
+    }
+
     logout() {
         localStorage.removeItem('token');
         this.currentUserSubject.next(null);

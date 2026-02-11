@@ -137,3 +137,36 @@ mat-card-actions {
 .signup-text a:hover {
   text-decoration: underline;
 }
+
+.sign-up-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
+  color: #1f2937;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  border: 1px solid #e5e7eb;
+}
+
+.sign-up-text:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+}
+
+
+.google-sign-up {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  color: #1f2937;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+}
