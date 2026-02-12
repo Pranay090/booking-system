@@ -8,7 +8,7 @@ import { LoaderService } from '../services/loader.service';
 export class LoaderInterceptor implements HttpInterceptor {
     private totalRequests = 0;
     private loaderStartTime = 0;
-    private readonly minimumLoaderTime = 1000; // 1 second
+    private readonly minimumLoaderTime = 0; // currently removed it but may next time we can see about progress bar min time after deploying second
 
     constructor(private loaderService: LoaderService) {}
 
