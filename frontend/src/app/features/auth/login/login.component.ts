@@ -52,6 +52,13 @@ export class LoginComponent implements OnInit {
                     } else {
                         this.router.navigate(['/events']);
                     }
+                },
+                error: (err) => {
+                    if (err.status === 401) {
+                        this.snackBar.open('Invalid credentials', 'Close', { duration: 3000 });
+                    } else {
+                        this.snackBar.open('An error occurred. Please try again.', 'Close', { duration: 3000 });
+                    }
                 }
             });
         }
