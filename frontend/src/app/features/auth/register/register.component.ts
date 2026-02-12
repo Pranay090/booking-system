@@ -32,12 +32,17 @@ export class RegisterComponent {
         if (this.registerForm.valid) {
             this.authService.register(this.registerForm.value).subscribe({
                 next: (res) => {
-                    this.snackBar.open('Registration successful! Please login.', 'Close', { duration: 3000 });
-                    this.router.navigate(['/login']);
+                    this.snackBar.open('Registration successful!', 'Close', { duration: 2000 });
+                    if (res.role === 'admin') {
+                        this.router.navigate(['/admin']);
+                    } else {
+                        console.log('Navigating to events');
+                        this.router.navigate(['/events']);
+                    }
                 },
                 error: (err) => {
-                    // Error handled by interceptor
-                    if (err.status === 409) {
+
+                    if (err.status === 500) {
                         this.snackBar.open('Email already exists', 'Close', { duration: 3000 });
                     }
                 }

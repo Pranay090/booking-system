@@ -15,7 +15,9 @@ router.post('/register', async (req, res) => {
             'INSERT INTO users (email, password_hash, role) VALUES ($1, $2, $3) RETURNING id, email, role',
             [email, hash, role || 'user']
         );
-        res.json(result.rows[0]);
+        const user = result.rows[0];
+        const token = jwt.sign({ id: user.id, role: user.role }, SECRET, { expiresIn: '24h' });
+        res.json({ token, user: { id: user.id, email: user.email, role: user.role } });
     } catch (e) {
         res.status(500).json({ error: e.message });
     }

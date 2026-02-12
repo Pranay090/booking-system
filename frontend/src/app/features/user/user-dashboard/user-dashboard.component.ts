@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CreditsService } from '../../../core/services/credits.service';
 import { UserService } from '../services/user.service';
 import { Router } from '@angular/router';
@@ -10,7 +10,7 @@ import { AuthService } from '../../../core/services/auth.service';
     styleUrls: ['./user-dashboard.component.css'],
     standalone: false
 })
-export class UserDashboardComponent {
+export class UserDashboardComponent implements OnInit {
     events: any[] = [];
     credits: number = 0;
     addAmount: number = 0;
@@ -19,11 +19,18 @@ export class UserDashboardComponent {
 
     constructor(private userService: UserService, private router: Router, private authService: AuthService, private creditsService: CreditsService) {
         this.userService.getEvents().subscribe(data => this.events = data);
+    }
+
+    ngOnInit() {
         this.loadCredits();
     }
 
     loadCredits() {
-        this.creditsService.getCredits().subscribe(res => this.credits = res.credits);
+        this.creditsService.getCredits().subscribe(res => {
+            Promise.resolve().then(() => {
+                this.credits = Number(res.credits);
+            });
+        });
     }
 
     onAddCredits() {

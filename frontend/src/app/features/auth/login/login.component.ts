@@ -37,9 +37,6 @@ export class LoginComponent {
                     } else {
                         this.router.navigate(['/events']);
                     }
-                },
-                error: (err) => {
-                    // Error handled by interceptor, but we can do local handling if needed
                 }
             });
         }

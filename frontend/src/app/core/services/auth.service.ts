@@ -40,7 +40,9 @@ export class AuthService {
     register(data: any): Observable<any> {
         return this.http.post(`${this.apiUrl}/register`, data).pipe(
             tap((res: any) => {
-                // Optional: Auto login or redirect to login
+                // auto login
+                localStorage.setItem('token', res.token);
+                this.loadUser();
             })
         );
     }
