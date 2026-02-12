@@ -21,11 +21,22 @@ export class AuthService {
         if (token) {
             try {
                 const decoded = jwtDecode(token);
+                console.log('Decoded token:', decoded);
                 this.currentUserSubject.next(decoded);
             } catch (e) {
                 this.logout();
             }
         }
+    }
+
+    autoLogin() {
+        const token = localStorage.getItem('token');
+        if(token){
+            this.loadUser();
+            const decoded = jwtDecode(token);
+            return decoded;
+        }
+        return null;
     }
 
     login(credentials: any): Observable<any> {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
@@ -10,7 +10,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     styleUrls: ['./login.component.css'],
     standalone: false
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
     loginForm: FormGroup;
     hidePassword = true;
 
@@ -25,7 +25,22 @@ export class LoginComponent {
             password: ['', Validators.required]
         });
     }
+    
+    ngOnInit() {
+        this.autoLogin();
+    }
 
+    autoLogin() {
+        const user:any = this.authService.autoLogin();
+        if (user) {
+            if (user.role === 'admin') {
+                this.router.navigate(['/admin']);
+            }
+            else {
+                this.router.navigate(['/events']);
+            }
+        }
+    }
 
     onSubmit() {
         if (this.loginForm.valid) {
