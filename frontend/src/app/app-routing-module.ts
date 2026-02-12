@@ -18,6 +18,10 @@ const routes: Routes = [
     loadChildren: () => import('./features/user/user.module').then(m => m.UserModule),
     canActivate: [AuthGuard],
     data: { roles: ['user', 'admin'] }
+  },
+  {
+    path: '**',
+    redirectTo: '/login'
   }
 ];
 
