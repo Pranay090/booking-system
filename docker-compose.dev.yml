@@ -1,4 +1,3 @@
-version: "3.9"
 
 # Development override file
 # This allows running only specific services from docker-compose

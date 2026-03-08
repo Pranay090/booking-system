@@ -1,0 +1,49 @@
+config:
+  target: 'http://localhost:3000'
+  phases:
+    # Warm-up phase
+    - duration: 10
+      arrivalRate: 5
+      name: "Warm up"
+    # Ramp up load
+    - duration: 30
+      arrivalRate: 10
+      rampTo: 50
+      name: "Ramp up load"
+    # Sustained load
+    - duration: 60
+      arrivalRate: 50
+      name: "Sustained load"
+    # Spike test
+    - duration: 10
+      arrivalRate: 100
+      name: "Spike test"
+
+scenarios:
+  # Scenario 1: Browse events (most common)
+  - name: "Browse Events"
+    weight: 50
+    flow:
+      - get:
+          url: "/health"
+      - get:
+          url: "/api/events"
+      - think: 2
+
+  # Scenario 2: View shows for an event
+  - name: "View Shows"
+    weight: 30
+    flow:
+      - get:
+          url: "/api/events"
+      - get:
+          url: "/api/events/1/shows"
+      - think: 3
+
+  # Scenario 3: View seats (before booking)
+  - name: "View Seats"
+    weight: 20
+    flow:
+      - get:
+          url: "/api/shows/1/seats"
+      - think: 2

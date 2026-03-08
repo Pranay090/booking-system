@@ -7,7 +7,11 @@
     "worker": "node src/pricing-worker.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon src/index.js",
-    "dev:worker": "nodemon src/pricing-worker.js"
+    "dev:worker": "nodemon src/pricing-worker.js",
+    "test:perf": "node tests/performance-test.js",
+    "test:db": "node tests/db-performance.js",
+    "test:redis": "node tests/redis-performance.js",
+    "test:all": "node tests/performance-test.js && node tests/db-performance.js && node tests/redis-performance.js"
   },
   "keywords": [],
   "author": "",
