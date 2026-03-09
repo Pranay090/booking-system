@@ -32,6 +32,13 @@ app.get('/health', async (req, res) => {
     res.json({ status: 'ok' });
 });
 
-app.listen(3000, () => {
-    console.log('API running on port 3000');
+const PORT = process.env.PORT || 3000;
+
+if (process.env.ENABLE_WORKER === 'true') {
+    const { startWorker } = require('./pricing-worker');
+    startWorker().catch(err => console.error('Pricing worker failed:', err));
+}
+
+app.listen(PORT, () => {
+    console.log(`API running on port ${PORT}`);
 });

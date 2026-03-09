@@ -82,19 +82,21 @@ async function startWorker() {
   setInterval(updatePricing, WORKER_INTERVAL);
 }
 
-// Handle graceful shutdown
-process.on('SIGINT', () => {
-  console.log('\nShutting down pricing worker...');
-  process.exit(0);
-});
+module.exports = { startWorker };
 
-process.on('SIGTERM', () => {
-  console.log('\nShutting down pricing worker...');
-  process.exit(0);
-});
+if (require.main === module) {
+  process.on('SIGINT', () => {
+    console.log('\nShutting down pricing worker...');
+    process.exit(0);
+  });
 
-// Start the worker
-startWorker().catch(err => {
-  console.error('Failed to start pricing worker:', err);
-  process.exit(1);
-});
+  process.on('SIGTERM', () => {
+    console.log('\nShutting down pricing worker...');
+    process.exit(0);
+  });
+
+  startWorker().catch(err => {
+    console.error('Failed to start pricing worker:', err);
+    process.exit(1);
+  });
+}
