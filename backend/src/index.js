@@ -12,8 +12,19 @@ const userCreditsRoute = require('./routes/user_credits');
 const app = express();
 const cors = require('cors');
 
+// Allow one or more frontend URLs (comma-separated). Strip trailing slashes for matching.
+const allowedOrigins = (process.env.FRONTEND_URL || 'http://localhost:4200')
+    .split(',')
+    .map(s => s.trim().replace(/\/$/, ''))
+    .filter(Boolean);
+
 app.use(cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:4200',
+    origin: (origin, cb) => {
+        if (!origin) return cb(null, true);
+        const normalized = origin.replace(/\/$/, '');
+        const allowed = allowedOrigins.some(allowed => normalized === allowed.replace(/\/$/, ''));
+        cb(null, allowed ? origin : false);
+    },
     credentials: true
 }));
 app.use(express.json());
