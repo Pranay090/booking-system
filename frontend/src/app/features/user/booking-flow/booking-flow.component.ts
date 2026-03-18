@@ -3,12 +3,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { environment } from '../../../../environments/environment';
 
 @Component({
     selector: 'app-booking-flow',
     templateUrl: './booking-flow.component.html',
     styleUrls: ['./booking-flow.component.css'],
-    standalone : false
+    standalone: false
 })
 export class BookingFlowComponent implements OnInit {
     eventId: number | null = null;
@@ -51,11 +52,11 @@ export class BookingFlowComponent implements OnInit {
 
     loadCredits() {
         // Use CreditsService directly or via userService if added
-        fetch('http://localhost:3000/user/credits', {
+        fetch(environment.apiUrl + '/user/credits', {
             headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
         })
-        .then(res => res.json())
-        .then(data => this.credits = data.credits || 0);
+            .then(res => res.json())
+            .then(data => this.credits = data.credits || 0);
     }
 
     toggleSeat(seat: any) {
