@@ -22,10 +22,14 @@ CREATE TABLE users (
   id SERIAL PRIMARY KEY,
   email TEXT UNIQUE NOT NULL,
   password_hash TEXT NOT NULL,
+  google_id TEXT UNIQUE,
+  name TEXT,
   role TEXT NOT NULL CHECK (role IN ('admin', 'user')),
   created_at TIMESTAMP DEFAULT NOW(),
   credits NUMERIC(12,2) NOT NULL DEFAULT 0
 );
+
+CREATE INDEX IF NOT EXISTS idx_users_google_id ON users(google_id);
 
 CREATE TABLE bookings (
   id SERIAL PRIMARY KEY,
