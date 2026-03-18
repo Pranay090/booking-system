@@ -22,7 +22,6 @@ export class AuthService {
         if (token) {
             try {
                 const decoded = jwtDecode(token);
-                console.log('Decoded token:', decoded);
                 this.currentUserSubject.next(decoded);
             } catch (e) {
                 this.logout();
