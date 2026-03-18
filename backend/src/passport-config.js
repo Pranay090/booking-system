@@ -23,19 +23,13 @@ passport.use(new GoogleStrategy({
 
         let user;
         if (result.rows.length > 0) {
-            // User exists, update google_id if not already set
+            // User exists, no need to update google_id since it's not in schema
             user = result.rows[0];
-            if (!user.google_id) {
-                await pool.query(
-                    'UPDATE users SET google_id = $1 WHERE id = $2',
-                    [googleId, user.id]
-                );
-            }
         } else {
-            // Create new user
+            // Create new user using only available columns
             const insertResult = await pool.query(
-                'INSERT INTO users (email, google_id, password_hash, role, name) VALUES ($1, $2, $3, $4, $5) RETURNING id, email, role, name',
-                [email, googleId, 'oauth-' + googleId, 'user', displayName]
+                'INSERT INTO users (email, password_hash, role) VALUES ($1, $2, $3) RETURNING id, email, role',
+                [email, 'oauth-' + googleId, 'user']
             );
             user = insertResult.rows[0];
         }
@@ -47,8 +41,9 @@ passport.use(new GoogleStrategy({
             { expiresIn: '24h' }
         );
 
-        return done(null, { token, user: { id: user.id, email: user.email, role: user.role, name: user.name } });
+        return done(null, { token, user: { id: user.id, email: user.email, role: user.role, name: displayName } });
     } catch (error) {
+        console.error("Google Auth Error:", error);
         return done(error);
     }
 }));
