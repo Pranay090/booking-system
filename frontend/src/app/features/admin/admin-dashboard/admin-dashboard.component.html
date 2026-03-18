@@ -2,7 +2,7 @@
     <mat-toolbar color="primary">
         <span>Admin Dashboard</span>
         <span class="spacer"></span>
-        <button mat-button routerLink="/logout" (click)="onLogout()">Logout</button>
+        <button mat-button (click)="onLogout()">Logout</button>
     </mat-toolbar>
 
     <mat-tab-group class="dashboard-tabs">
@@ -108,14 +108,16 @@
     </mat-tab-group>
 
     <!-- Logout Popup -->
-    <div *ngIf="showPopUp" class="popup-overlay">
-        <div class="popup">
-            <h3>Are you sure you want to Logout?</h3>
-            <p>Your current session will be discarded</p>
-            <div class="popup-actions">
-                <button mat-button (click)="cancelPopup()">Cancel</button>
-                <button mat-raised-button color="primary" (click)="logout()">Logout</button>
+    @if(showPopUp){
+        <div class="popup-overlay">
+            <div class="popup">
+                <h3>Are you sure you want to Logout?</h3>
+                <p>Your current session will be discarded</p>
+                <div class="popup-actions">
+                    <button mat-button (click)="cancelPopup()">Cancel</button>
+                    <button mat-raised-button color="primary" (click)="logout()">Logout</button>
+                </div>
             </div>
         </div>
-    </div>
+    }
 </div>
