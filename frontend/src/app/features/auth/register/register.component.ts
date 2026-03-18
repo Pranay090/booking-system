@@ -33,7 +33,7 @@ export class RegisterComponent {
             this.authService.register(this.registerForm.value).subscribe({
                 next: (res) => {
                     this.snackBar.open('Registration successful!', 'Close', { duration: 2000 });
-                    if (res.role === 'admin') {
+                    if (res.user?.role === 'admin') {
                         this.router.navigate(['/admin']);
                     } else {
                         console.log('Navigating to events');
