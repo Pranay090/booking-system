@@ -1,29 +1,51 @@
 <div class="user-container">
 
-    <mat-toolbar color="primary">
-        <span>Events</span>
+    <mat-toolbar color="primary" class="dashboard-toolbar">
+        <span class="logo-text">Booking<span class="logo-accent">Pro</span></span>
         <span class="spacer"></span>
-        <span style="margin-right: 16px; display: flex; align-items: center;">
+        <div class="credits-pill" matTooltip="Available Credits">
             <mat-icon>account_balance_wallet</mat-icon>
-            <span style="margin: 0 4px; font-weight: bold;">{{credits | number:'1.2-2'}}</span>
-            <mat-icon>monetization_on</mat-icon>
-        </span>
-        <button mat-button (click)="onLogout()">Logout</button>
+            <span class="credits-amount">{{credits | number:'1.2-2'}}</span>
+            <span class="credits-symbol">CR</span>
+        </div>
+        <button mat-button class="logout-btn" (click)="onLogout()">
+            <mat-icon>exit_to_app</mat-icon>
+            <span>Logout</span>
+        </button>
     </mat-toolbar>
 
     <div class="content">
-        <div class="sub-header">
+        <!-- Hero Welcome Section -->
+        <div class="welcome-hero" data-aos="fade-down" data-aos-duration="800">
+            <div class="hero-text">
+                <h1>Welcome to your personalized portal</h1>
+                <p>Discover exclusively priced events tailored for you.</p>
+            </div>
+            <div class="hero-graphic">
+                <div class="graphic-circle"></div>
+            </div>
+        </div>
+
+        <div class="sub-header" data-aos="fade-right" data-aos-duration="800">
             <h2>Upcoming Events</h2>
-            <button mat-raised-button color="accent" (click)="onAdd()">Add Free Credits</button>
+            <button mat-raised-button color="accent" class="add-credits-btn" (click)="onAdd()">
+                <mat-icon>add_circle_outline</mat-icon> Add Credits
+            </button>
         </div>
 
         <div class="events-grid">
-            <mat-card *ngFor="let event of events" class="event-card">
+            <mat-card *ngFor="let event of events; let a = index" class="event-card premium-card"
+                [attr.data-aos]="'fade-up'" [attr.data-aos-delay]="a * 50" [attr.data-aos-duration]="600">
+                <div class="card-image-placeholder">
+                    <mat-icon>event_seat</mat-icon>
+                </div>
                 <mat-card-header>
                     <mat-card-title>{{event.name}}</mat-card-title>
+                    <!-- <mat-card-subtitle>Dynamic Pricing Enabled</mat-card-subtitle> -->
                 </mat-card-header>
                 <mat-card-actions>
-                    <button mat-raised-button color="accent" (click)="onBook(event.id)">Book Tickets</button>
+                    <button mat-flat-button color="primary" class="book-btn" (click)="onBook(event.id)">Reserve
+                        Seat</button>
                 </mat-card-actions>
             </mat-card>
         </div>
@@ -31,28 +53,38 @@
 
     <!-- Logout Popup -->
     @if(showLogoutPopUp){
-        <div class="popup-overlay">
-            <div class="popup">
-                <h3>Are you sure you want to Logout?</h3>
-                <p>Your current session will be discarded</p>
-                <div class="popup-actions">
-                    <button mat-button (click)="cancelPopup()">Cancel</button>
-                    <button mat-raised-button color="primary" (click)="logout()">Logout</button>
-                </div>
+    <div class="popup-overlay premium-overlay">
+        <div class="popup light-popup" data-aos="zoom-in" data-aos-duration="300">
+            <div class="popup-icon warning">
+                <mat-icon>power_settings_new</mat-icon>
+            </div>
+            <h3>Confirm Logout</h3>
+            <p>Are you sure you want to end your session?</p>
+            <div class="popup-actions">
+                <button mat-button class="cancel-btn" (click)="cancelPopup()">Cancel</button>
+                <button mat-flat-button color="warn" (click)="logout()">Logout</button>
             </div>
         </div>
+    </div>
     }
+
+    <!-- Add Credits Popup -->
     @if(showAddPopUp){
-    <div class="popup-overlay">
-        <div class="popup">
-            <h3>Add more credits?</h3>
-            <p>Just enter the number of credits you wish to have :</p>
-            <mat-form-field style="width: 100px; margin-right: 8px;">
-                <input matInput type="number" [(ngModel)]="addAmount" min="1" placeholder="Add Coins">
+    <div class="popup-overlay premium-overlay">
+        <div class="popup light-popup" data-aos="zoom-in" data-aos-duration="300">
+            <div class="popup-icon success">
+                <mat-icon>monetization_on</mat-icon>
+            </div>
+            <h3>Boost Your Balance</h3>
+            <p>Enter the amount of credits to add to your wallet.</p>
+            <mat-form-field appearance="outline" class="credit-input">
+                <mat-label>Credits</mat-label>
+                <input matInput type="number" [(ngModel)]="addAmount" min="1" placeholder="e.g. 50">
+                <span matTextPrefix>$&nbsp;</span>
             </mat-form-field>
             <div class="popup-actions">
-                <button mat-button (click)="onCancelPopup()">Cancel</button>
-                <button mat-raised-button color="primary" (click)="onAddCredits()">Done</button>
+                <button mat-button class="cancel-btn" (click)="onCancelPopup()">Cancel</button>
+                <button mat-flat-button color="primary" (click)="onAddCredits()">Confirm</button>
             </div>
         </div>
     </div>

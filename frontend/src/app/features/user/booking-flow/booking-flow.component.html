@@ -1,69 +1,111 @@
 <div class="booking-container">
-    <mat-toolbar color="primary">
-        <button mat-icon-button routerLink="/events">
+    <mat-toolbar color="primary" class="dashboard-toolbar">
+        <button mat-icon-button routerLink="/events" matTooltip="Back to Events">
             <mat-icon>arrow_back</mat-icon>
         </button>
-        <span>Book Tickets</span>
+        <span class="toolbar-title">Reserve Your Seats</span>
     </mat-toolbar>
 
     <div class="content">
         <!-- Step 1: Select Show -->
-        <div *ngIf="!selectedShowId">
-            <h2>Select Show Time</h2>
+        <div *ngIf="!selectedShowId" data-aos="fade-up" data-aos-duration="600">
+            <div class="step-header">
+                <h2>Select Show Time</h2>
+                <p>Choose an available time slot below to continue.</p>
+            </div>
             <div class="shows-list">
-                <mat-card *ngFor="let show of shows" (click)="onSelectShow(show.id)" class="show-card">
-                    <mat-card-content>
-                        <h3>{{show.show_time | date:'medium'}}</h3>
-                    </mat-card-content>
-                </mat-card>
-                <p *ngIf="shows.length === 0">No shows available.</p>
+                <div *ngFor="let show of shows; let i = index" 
+                     (click)="onSelectShow(show.id)" 
+                     class="show-card premium-card"
+                     [attr.data-aos]="'zoom-in'"
+                     [attr.data-aos-delay]="i * 50">
+                    <div class="card-icon">
+                        <mat-icon>schedule</mat-icon>
+                    </div>
+                    <h3>{{show.show_time | date:'shortTime'}}</h3>
+                    <p class="show-date">{{show.show_time | date:'fullDate'}}</p>
+                </div>
+                <div *ngIf="shows.length === 0" class="empty-state">
+                    <mat-icon>event_busy</mat-icon>
+                    <p>No shows available at the moment.</p>
+                </div>
             </div>
         </div>
 
         <!-- Step 2: Select Seats -->
-        <div *ngIf="selectedShowId">
-            <div class="step-header">
-                <h2>Select Seats</h2>
-                <button mat-button (click)="selectedShowId = null">Change Show</button>
-            </div>
-
-            <div class="screen">SCREEN</div>
-
-            <div class="seats-grid">
-                @for (seat of seats; track seat.id) {
-                <button
-                    class="seat"
-                    [class.booked]="seat.status === 'BOOKED'"
-                    [class.selected]="isSelected(seat.id)"
-                    (click)="toggleSeat(seat)"
-                    [matTooltip]="'₹' + (seat.current_price || seat.base_price) "
-                    >
-                    {{ seat.seat_number }}
+        <div *ngIf="selectedShowId" data-aos="fade-up" data-aos-duration="600">
+            <div class="booking-header" data-aos="fade-down">
+                <div>
+                    <h2>Select Your Seats</h2>
+                    <p>Click on the available seats to add them to your reservation.</p>
+                </div>
+                <button mat-stroked-button class="change-show-btn" (click)="selectedShowId = null">
+                    <mat-icon>event</mat-icon> Change Show
                 </button>
-            }
-
             </div>
-            <p *ngIf="seats.length === 0">No seats configuration found.</p>
 
-            <div class="actions">
-                <span>Selected: {{selectedSeats.length}}</span>
-                <span style="margin-left: 16px;">Total: ₹{{getSelectedTotal() | number:'1.2-2'}}</span>
-                <button mat-raised-button color="accent" [disabled]="selectedSeats.length === 0"
+            <div class="cinema-container">
+                <div class="screen-wrapper">
+                    <div class="screen-glow"></div>
+                    <div class="screen">SCREEN</div>
+                </div>
+
+                <div class="seats-grid">
+                    @for (seat of seats; track seat.id) {
+                    <button
+                        class="seat"
+                        [class.booked]="seat.status === 'BOOKED'"
+                        [class.selected]="isSelected(seat.id)"
+                        (click)="toggleSeat(seat)"
+                        [matTooltip]="'₹' + (seat.current_price || seat.base_price)"
+                        >
+                        {{ seat.seat_number }}
+                    </button>
+                    }
+                </div>
+                <div *ngIf="seats.length === 0" class="empty-state">
+                    <p>No seats configuration found.</p>
+                </div>
+            </div>
+
+            <div class="actions glass-bar">
+                <div class="total-info">
+                    <div class="selected-count">
+                        <mat-icon>weekend</mat-icon>
+                        <span>{{selectedSeats.length}} Seats Selected</span>
+                    </div>
+                    <div class="total-price">
+                        <span class="label">Total Amount</span>
+                        <span class="value">₹{{getSelectedTotal() | number:'1.2-2'}}</span>
+                    </div>
+                </div>
+                <button mat-flat-button color="primary" class="confirm-btn" [disabled]="selectedSeats.length === 0"
                     (click)="confirmBooking()">
                     Confirm Booking
                 </button>
             </div>
 
             <!-- Booking Confirmation Popup -->
-            <div *ngIf="showPopup" class="popup-overlay">
-                <div class="popup">
+            <div *ngIf="showPopup" class="popup-overlay premium-overlay">
+                <div class="popup light-popup" data-aos="zoom-in" data-aos-duration="300">
+                    <div class="popup-icon success">
+                        <mat-icon>check_circle</mat-icon>
+                    </div>
                     <h3>Confirm Booking</h3>
-                    <p>You are about to book <b>{{selectedSeats.length}}</b> seat(s) for <b>₹{{totalPrice | number:'1.2-2'}}</b>.</p>
-                    <p>Your credits:<b>{{credits | number:'1.2-2'}}</b></p>
-                    <p *ngIf="credits < totalPrice" style="color: red;">Insufficient credits!</p>
+                    <p>You are about to book <b>{{selectedSeats.length}}</b> seat(s) for a total of <b>₹{{totalPrice | number:'1.2-2'}}</b>.</p>
+                    
+                    <div class="wallet-info" [class.insufficient]="credits < totalPrice">
+                        <span>Current Balance:</span>
+                        <strong>₹{{credits | number:'1.2-2'}}</strong>
+                    </div>
+                    
+                    <p *ngIf="credits < totalPrice" class="error-msg">
+                        <mat-icon>error_outline</mat-icon> Insufficient credits to complete this booking!
+                    </p>
+                    
                     <div class="popup-actions">
-                        <button mat-button (click)="cancelPopup()">Cancel</button>
-                        <button mat-raised-button color="primary" [disabled]="credits < totalPrice" (click)="payAndBook()">Pay & Book</button>
+                        <button mat-button class="cancel-btn" (click)="cancelPopup()">Cancel</button>
+                        <button mat-flat-button color="primary" [disabled]="credits < totalPrice" (click)="payAndBook()">Pay & Book</button>
                     </div>
                 </div>
             </div>

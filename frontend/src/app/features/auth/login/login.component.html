@@ -1,55 +1,66 @@
-<div class="auth-container">
-    <mat-card class="auth-card">
-        <!-- Form Section -->
-        <div class="form-section">
-            <mat-card-header>
-                <mat-card-title>Welcome back!</mat-card-title>
-                <mat-card-subtitle>Please enter your details</mat-card-subtitle>
-            </mat-card-header>
-            <mat-card-content>
-                <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-                    <mat-form-field appearance="fill" class="full-width">
-                        <mat-label>Email</mat-label>
-                        <input matInput formControlName="email" placeholder="anna@gmail.com">
-                        <mat-error *ngIf="loginForm.get('email')?.hasError('email')">
-                            Please enter a valid email address
-                        </mat-error>
-                        <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
-                            Email is required
-                        </mat-error>
-                    </mat-form-field>
+<div class="auth-wrapper">
+  
+  <div class="auth-graphic" data-aos="fade-right" data-aos-duration="1000">
+    <div class="graphic-content">
+      <h1 class="graphic-title">Welcome back.</h1>
+      <p class="graphic-subtitle">Access your premium booking dashboard to manage reservations and secure the best dynamic pricing available.</p>
+      
+      <div class="decorative-blob"></div>
+      <div class="decorative-blob-2"></div>
+    </div>
+  </div>
 
-                    <mat-form-field appearance="fill" class="full-width">
-                        <mat-label>Password</mat-label>
-                        <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password">
-                        <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword"
-                            [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword" type="button">
-                            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-                        </button>
-                        <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
-                            Password is required
-                        </mat-error>
-                    </mat-form-field>
+  <div class="auth-form-container" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="200">
+    <div class="form-wrapper">
+      <div class="form-header">
+        <h2>Log in to your account</h2>
+        <p>Please enter your details below</p>
+      </div>
+      
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" placeholder="anna@gmail.com">
+            <mat-error *ngIf="loginForm.get('email')?.hasError('email')">
+                Please enter a valid email address
+            </mat-error>
+            <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
+                Email is required
+            </mat-error>
+        </mat-form-field>
 
-                    <button mat-flat-button color="primary" type="submit" class="full-width"
-                        [disabled]="!loginForm.valid">
-                        Log in
-                    </button>
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Password</mat-label>
+            <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password">
+            <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword"
+                [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword" type="button">
+                <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+            <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
+                Password is required
+            </mat-error>
+        </mat-form-field>
 
-                    <div class="divider">
-                        <span>or</span>
-                    </div>
+        <button mat-flat-button color="primary" type="submit" class="submit-btn full-width"
+            [disabled]="!loginForm.valid">
+            Log in
+        </button>
 
-                    <div class="sign-up-text" (click)="loginWithGoogle()">
-                        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google"
-                            class="google-icon">
-                        <span>Log in with Google</span>
-                    </div>
-                </form>
-            </mat-card-content>
-            <mat-card-actions align="end">
-                <span class="signup-text">Don't have an account? <a routerLink="/register">Sign Up</a></span>
-            </mat-card-actions>
+        <div class="divider">
+            <span>or continue with</span>
         </div>
-    </mat-card>
+
+        <div class="google-btn" (click)="loginWithGoogle()">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google"
+                class="google-icon">
+            <span>Log in with Google</span>
+        </div>
+      </form>
+
+      <div class="footer-action">
+          <span class="signup-text">Don't have an account? <a routerLink="/register">Sign Up</a></span>
+      </div>
+    </div>
+  </div>
+
 </div>

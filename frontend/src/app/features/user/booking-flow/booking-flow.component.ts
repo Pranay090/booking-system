@@ -4,6 +4,7 @@ import { UserService } from '../services/user.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { environment } from '../../../../environments/environment';
+import * as AOS from 'aos';
 
 @Component({
     selector: 'app-booking-flow',
@@ -39,7 +40,10 @@ export class BookingFlowComponent implements OnInit {
 
     loadShows() {
         if (this.eventId) {
-            this.userService.getShows(this.eventId).subscribe(data => this.shows = data);
+            this.userService.getShows(this.eventId).subscribe(data => {
+                this.shows = data;
+                setTimeout(() => AOS.refresh(), 100);
+            });
         }
     }
 

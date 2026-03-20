@@ -3,6 +3,7 @@ import { CreditsService } from '../../../core/services/credits.service';
 import { UserService } from '../services/user.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
+import * as AOS from 'aos';
 
 @Component({
     selector: 'app-user-dashboard',
@@ -18,7 +19,12 @@ export class UserDashboardComponent implements OnInit {
     showAddPopUp = false;
 
     constructor(private userService: UserService, private router: Router, private authService: AuthService, private creditsService: CreditsService) {
-        this.userService.getEvents().subscribe(data => this.events = data);
+        this.userService.getEvents().subscribe(data => {
+            this.events = data;
+            setTimeout(() => {
+                AOS.refresh();
+            }, 100);
+        });
     }
 
     ngOnInit() {
