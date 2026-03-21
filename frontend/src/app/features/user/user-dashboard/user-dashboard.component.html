@@ -33,9 +33,8 @@
             </button>
         </div>
 
-        <div class="events-grid">
-            <mat-card *ngFor="let event of events; let a = index" class="event-card premium-card"
-                [attr.data-aos]="'fade-up'" [attr.data-aos-delay]="a * 50" [attr.data-aos-duration]="600">
+        <div class="events-grid" data-aos="fade-up" data-aos-duration="600">
+            <mat-card *ngFor="let event of events" class="event-card premium-card">
                 <div class="card-image-placeholder">
                     <mat-icon>event_seat</mat-icon>
                 </div>

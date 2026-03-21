@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { CreditsService } from '../../../core/services/credits.service';
 import { UserService } from '../services/user.service';
 import { Router } from '@angular/router';
@@ -11,24 +11,36 @@ import * as AOS from 'aos';
     styleUrls: ['./user-dashboard.component.css'],
     standalone: false
 })
-export class UserDashboardComponent implements OnInit {
+export class UserDashboardComponent implements OnInit, AfterViewInit {
     events: any[] = [];
     credits: number = 0;
     addAmount: number = 0;
     showLogoutPopUp = false;
     showAddPopUp = false;
+    private viewInitialized = false;
 
-    constructor(private userService: UserService, private router: Router, private authService: AuthService, private creditsService: CreditsService) {
+    constructor(private userService: UserService, private router: Router, private authService: AuthService, private creditsService: CreditsService) { }
+
+    ngOnInit() {
+        this.loadEvents();
+        this.loadCredits();
+    }
+
+    ngAfterViewInit() {
+        this.viewInitialized = true;
+        this.refreshAos();
+    }
+
+    loadEvents() {
         this.userService.getEvents().subscribe(data => {
             this.events = data;
-            setTimeout(() => {
-                AOS.refresh();
-            }, 100);
+            this.refreshAos();
         });
     }
 
-    ngOnInit() {
-        this.loadCredits();
+    private refreshAos() {
+        if (!this.viewInitialized) return;
+        setTimeout(() => AOS.refreshHard(), 0);
     }
 
     loadCredits() {
