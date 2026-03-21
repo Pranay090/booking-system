@@ -28,13 +28,23 @@
 
         <div class="sub-header" data-aos="fade-right" data-aos-duration="800">
             <h2>Upcoming Events</h2>
+            <mat-form-field appearance="outline" class="search-input">
+                <mat-label>Search events by name</mat-label>
+                <mat-icon matPrefix>search</mat-icon>
+                <input
+                    matInput
+                    type="text"
+                    [(ngModel)]="searchTerm"
+                    (ngModelChange)="onSearchChange()"
+                    placeholder="Type an event name">
+            </mat-form-field>
             <button mat-raised-button color="accent" class="add-credits-btn" (click)="onAdd()">
                 <mat-icon>add_circle_outline</mat-icon> Add Credits
             </button>
         </div>
 
         <div class="events-grid" data-aos="fade-up" data-aos-duration="600">
-            <mat-card *ngFor="let event of events" class="event-card premium-card">
+            <mat-card *ngFor="let event of filteredEvents" class="event-card premium-card">
                 <div class="card-image-placeholder">
                     <mat-icon>event_seat</mat-icon>
                 </div>
@@ -48,6 +58,13 @@
                 </mat-card-actions>
             </mat-card>
         </div>
+
+        @if(filteredEvents.length === 0){
+        <div class="empty-events" data-aos="fade-up" data-aos-duration="500">
+            <mat-icon>search_off</mat-icon>
+            <p>No events found for "{{searchTerm}}".</p>
+        </div>
+        }
     </div>
 
     <!-- Logout Popup -->

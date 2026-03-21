@@ -13,6 +13,8 @@ import * as AOS from 'aos';
 })
 export class UserDashboardComponent implements OnInit, AfterViewInit {
     events: any[] = [];
+    filteredEvents: any[] = [];
+    searchTerm = '';
     credits: number = 0;
     addAmount: number = 0;
     showLogoutPopUp = false;
@@ -34,8 +36,21 @@ export class UserDashboardComponent implements OnInit, AfterViewInit {
     loadEvents() {
         this.userService.getEvents().subscribe(data => {
             this.events = data;
+            this.applyEventFilter();
             this.refreshAos();
         });
+    }
+
+    onSearchChange() {
+        this.applyEventFilter();
+    }
+
+    private applyEventFilter() {
+        const normalizedSearchTerm = this.searchTerm.trim().toLowerCase();
+        this.filteredEvents = this.events.filter(event =>
+            (event?.name ?? '').toLowerCase().includes(normalizedSearchTerm)
+        );
+        this.refreshAos();
     }
 
     private refreshAos() {

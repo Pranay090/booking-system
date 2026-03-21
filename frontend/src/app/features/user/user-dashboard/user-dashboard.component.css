@@ -147,6 +147,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  gap: 16px;
   border-bottom: 2px solid var(--border-light);
   padding-bottom: 1rem;
 }
@@ -162,7 +163,19 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-shrink: 0;
   padding: 0 20px !important;
+}
+
+.search-input {
+  flex: 1;
+  width: 100%;
+  max-width: 520px;
+}
+
+.search-input :is(mat-icon) {
+  margin-right: 8px;
+  color: var(--text-secondary);
 }
 
 /* Grid layout */
@@ -170,6 +183,19 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 30px;
+}
+
+.empty-events {
+  margin-top: -10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.empty-events mat-icon {
+  color: var(--text-secondary);
 }
 
 /* Premium Card Design */
@@ -328,5 +354,18 @@
   .credits-pill {
     padding: 4px 10px;
     margin-right: 10px;
+  }
+
+  .sub-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-input {
+    max-width: none;
+  }
+
+  .add-credits-btn {
+    align-self: flex-start;
   }
 }
