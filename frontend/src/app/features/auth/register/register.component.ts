@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
+import { environment } from '../../../../environments/environment';
 @Component({
     selector: 'app-register',
     templateUrl: './register.component.html',
@@ -13,7 +13,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class RegisterComponent {
     registerForm: FormGroup;
     hidePassword = true;
-
+    environment = environment;
     constructor(
         private fb: FormBuilder,
         private authService: AuthService,

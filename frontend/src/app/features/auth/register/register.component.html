@@ -34,7 +34,7 @@
             <mat-label>Role</mat-label>
             <mat-select formControlName="role">
                 <mat-option value="user">User</mat-option>
-                <mat-option value="admin">Admin</mat-option>
+                <mat-option [disabled]="environment.production" value="admin">Admin</mat-option>
             </mat-select>
         </mat-form-field>
 
