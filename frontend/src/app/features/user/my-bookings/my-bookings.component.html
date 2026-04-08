@@ -1,0 +1,56 @@
+<div class="user-container">
+    <mat-toolbar color="primary" class="dashboard-toolbar">
+        <span class="logo-text">Booking<span class="logo-accent">Pro</span></span>
+        <span class="spacer"></span>
+        <button mat-button class="back-btn" (click)="goBack()">
+            <mat-icon>arrow_back</mat-icon>
+            <span>Back to Dashboard</span>
+        </button>
+    </mat-toolbar>
+
+    <div class="content">
+        <div class="sub-header" data-aos="fade-right" data-aos-duration="800">
+            <h2>Your Bookings</h2>
+            <p>Review the events you have successfully booked.</p>
+        </div>
+
+        <div *ngIf="loading" class="loading-state">
+            <mat-spinner diameter="40"></mat-spinner>
+            <p>Loading your bookings...</p>
+        </div>
+
+        <div *ngIf="!loading && bookings.length > 0" class="bookings-grid" data-aos="fade-up" data-aos-duration="600">
+            <mat-card *ngFor="let booking of bookings" class="booking-card premium-card">
+                <mat-card-header>
+                    <div mat-card-avatar class="booking-avatar">
+                        <mat-icon>confirmation_number</mat-icon>
+                    </div>
+                    <mat-card-title>{{ booking.event_name }}</mat-card-title>
+                    <mat-card-subtitle>Booking ID: #{{ booking.booking_id }}</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="booking-detail">
+                        <mat-icon>schedule</mat-icon>
+                        <span>{{ booking.show_time | date:'medium' }}</span>
+                    </div>
+                    <div class="booking-detail">
+                        <mat-icon>event_seat</mat-icon>
+                        <span>Seats: <strong>{{ booking.seats }}</strong></span>
+                    </div>
+                </mat-card-content>
+                <div class="card-footer">
+                    <div class="cost-pill">
+                        <span class="cost-label">Total Paid:</span>
+                        <span class="cost-value">{{ booking.total_cost | currency:'USD' }}</span>
+                    </div>
+                </div>
+            </mat-card>
+        </div>
+
+        <div *ngIf="!loading && bookings.length === 0" class="empty-state" data-aos="fade-up" data-aos-duration="500">
+            <mat-icon>receipt_long</mat-icon>
+            <p>You have no current bookings.</p>
+            <button mat-flat-button color="primary" (click)="goBack()">Explore Events</button>
+        </div>
+    </div>
+</div>

@@ -16,8 +16,8 @@ router.post('/register', async (req, res) => {
             [email, hash, role || 'user']
         );
         const user = result.rows[0];
-        const token = jwt.sign({ id: user.id, role: user.role }, SECRET, { expiresIn: '7d' });
-        res.json({ token, user: { id: user.id, email: user.email, role: user.role } });
+        const token = jwt.sign({ id: user.id, role: user.role, email: user.email, name: user.name }, SECRET, { expiresIn: '7d' });
+        res.json({ token, user: { id: user.id, email: user.email, role: user.role, name: user.name } });
     } catch (e) {
         res.status(500).json({ error: e.message });
     }
@@ -39,8 +39,8 @@ router.post('/login', async (req, res) => {
         const valid = await bcrypt.compare(password, user.password_hash);
         if (!valid) return res.status(401).json({ error: 'Invalid credentials' });
 
-        const token = jwt.sign({ id: user.id, role: user.role }, SECRET, { expiresIn: '7d' });
-        res.json({ token, user: { id: user.id, email: user.email, role: user.role } });
+        const token = jwt.sign({ id: user.id, role: user.role, email: user.email, name: user.name }, SECRET, { expiresIn: '7d' });
+        res.json({ token, user: { id: user.id, email: user.email, role: user.role, name: user.name } });
     } catch (e) {
         res.status(500).json({ error: e.message });
     }

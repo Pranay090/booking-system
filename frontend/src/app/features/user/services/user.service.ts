@@ -26,4 +26,8 @@ export class UserService {
     bookSeats(bookingData: any): Observable<any> {
         return this.http.post(`${this.apiUrl}/book`, bookingData); // Note: booking.js route
     }
+
+    getMyBookings(): Observable<any[]> {
+        return this.http.get<any[]>(`${this.apiUrl}/user/bookings`);
+    }
 }

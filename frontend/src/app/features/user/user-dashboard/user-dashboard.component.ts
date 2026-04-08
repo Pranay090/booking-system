@@ -19,6 +19,7 @@ export class UserDashboardComponent implements OnInit, AfterViewInit {
     addAmount: number = 0;
     showLogoutPopUp = false;
     showAddPopUp = false;
+    userInitial: string = 'U';
     private viewInitialized = false;
 
     constructor(private userService: UserService, private router: Router, private authService: AuthService, private creditsService: CreditsService) { }
@@ -26,6 +27,15 @@ export class UserDashboardComponent implements OnInit, AfterViewInit {
     ngOnInit() {
         this.loadEvents();
         this.loadCredits();
+        
+        const currentUser = this.authService.currentUserValue;
+        if (currentUser) {
+            if (currentUser.name) {
+                this.userInitial = currentUser.name.charAt(0).toUpperCase();
+            } else if (currentUser.email) {
+                this.userInitial = currentUser.email.charAt(0).toUpperCase();
+            }
+        }
     }
 
     ngAfterViewInit() {
@@ -86,6 +96,10 @@ export class UserDashboardComponent implements OnInit, AfterViewInit {
 
     onBook(eventId: number) {
         this.router.navigate(['/events/book', eventId]);
+    }
+
+    goToMyBookings() {
+        this.router.navigate(['/events/my-bookings']);
     }
 
     logout() {

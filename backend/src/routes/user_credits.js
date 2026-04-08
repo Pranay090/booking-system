@@ -32,4 +32,32 @@ router.post('/credits/add', verifyUser, async (req, res) => {
     }
 });
 
+// Get user bookings
+router.get('/bookings', verifyUser, async (req, res) => {
+    const userId = req.user.id;
+    try {
+        const query = `
+            SELECT 
+                b.id as booking_id,
+                e.name as event_name,
+                s.show_time,
+                SUM(bs.price) as total_cost,
+                STRING_AGG(se.seat_number, ', ') as seats,
+                b.created_at
+            FROM bookings b
+            JOIN shows s ON b.show_id = s.id
+            JOIN events e ON s.event_id = e.id
+            JOIN booking_seats bs ON b.id = bs.booking_id
+            JOIN seats se ON bs.seat_id = se.id
+            WHERE b.user_id = $1
+            GROUP BY b.id, e.name, s.show_time, b.created_at
+            ORDER BY b.created_at DESC
+        `;
+        const result = await pool.query(query, [userId]);
+        res.json(result.rows);
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
 module.exports = router;

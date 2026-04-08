@@ -8,10 +8,20 @@
             <span class="credits-amount">{{credits | number:'1.2-2'}}</span>
             <span class="credits-symbol">CR</span>
         </div>
-        <button mat-button class="logout-btn" (click)="onLogout()">
-            <mat-icon>exit_to_app</mat-icon>
-            <span>Logout</span>
+        <button mat-icon-button [matMenuTriggerFor]="profileMenu" class="profile-btn">
+            <div class="profile-icon">{{ userInitial }}</div>
         </button>
+        <mat-menu #profileMenu="matMenu" class="premium-menu">
+            <button mat-menu-item (click)="goToMyBookings()">
+                <mat-icon>receipt_long</mat-icon>
+                <span>My Bookings</span>
+            </button>
+            <mat-divider></mat-divider>
+            <button mat-menu-item class="warn-text" (click)="onLogout()">
+                <mat-icon color="warn">exit_to_app</mat-icon>
+                <span>Logout</span>
+            </button>
+        </mat-menu>
     </mat-toolbar>
 
     <div class="content">
