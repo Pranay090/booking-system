@@ -164,3 +164,106 @@
     color: var(--success-color);
     font-size: 18px;
 }
+
+/* Responsive constraints */
+@media (max-width: 768px) {
+  .dashboard-toolbar {
+    padding: 0 16px;
+  }
+
+  .bookings-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .content {
+    padding: 24px 16px;
+  }
+
+  .sub-header h2 {
+    font-size: 1.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-toolbar {
+    padding: 0 8px;
+  }
+
+  .logo-text {
+    font-size: 1.2rem;
+  }
+
+  .back-btn {
+    padding: 0 12px;
+    font-size: 0.85rem;
+  }
+
+  .back-btn span {
+    display: none;
+  }
+
+  .content {
+    padding: 16px 12px;
+  }
+
+  .sub-header {
+    margin-bottom: 24px;
+  }
+
+  .sub-header h2 {
+    font-size: 1.4rem;
+  }
+
+  .sub-header p {
+    font-size: 0.9rem;
+  }
+
+  .bookings-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .premium-card {
+    padding: 16px;
+    border-radius: 14px;
+  }
+
+  .booking-detail {
+    margin-top: 14px;
+    gap: 8px;
+    font-size: 0.9rem;
+  }
+
+  .card-footer {
+    margin-top: 16px;
+    padding-top: 14px;
+  }
+
+  .cost-pill {
+    padding: 10px 12px;
+    border-radius: 10px;
+  }
+
+  .cost-label {
+    font-size: 13px;
+  }
+
+  .cost-value {
+    font-size: 16px;
+  }
+
+  .loading-state, .empty-state {
+    padding: 40px 0;
+  }
+
+  .empty-state mat-icon {
+    font-size: 48px;
+    height: 48px;
+    width: 48px;
+  }
+
+  .empty-state p {
+    font-size: 15px;
+  }
+}

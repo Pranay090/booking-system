@@ -185,3 +185,32 @@ mat-form-field {
 .signup-text a:hover {
   text-decoration: underline;
 }
+
+/* Responsive constraints */
+@media (max-width: 480px) {
+  .auth-form-container {
+    padding: 1.5rem 1rem;
+  }
+
+  .form-header h2 {
+    font-size: 1.75rem;
+  }
+
+  .form-header p {
+    font-size: 0.95rem;
+  }
+
+  .form-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .submit-btn,
+  .google-btn {
+    height: 48px;
+    font-size: 1rem !important;
+  }
+
+  .divider {
+    margin: 1.5rem 0;
+  }
+}

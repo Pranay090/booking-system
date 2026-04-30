@@ -309,3 +309,29 @@ input[type=number] {
   background: rgba(255, 255, 255, 0.3) !important;
   text-shadow: none !important;
 }
+
+/* ===================== Global Responsive Fixes ===================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.75rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .mat-card-title {
+    font-size: 1.2rem !important;
+  }
+
+  /* Prevent horizontal overflow on any screen */
+  body {
+    overflow-x: hidden;
+  }
+}
